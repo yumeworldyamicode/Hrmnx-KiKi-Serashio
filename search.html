@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Search — Serashio</title>
+
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            background: #ffffff;
+            color: #151515;
+            font-family: "DM Sans", sans-serif;
+            min-height: 100vh;
+        }
+
+
+        /* HEADER */
+
+        .serashio-header {
+
+            padding: 28px 45px 20px;
+
+            border-bottom: 1px solid #eeeeee;
+        }
+
+
+        .serashio-logo {
+
+            font-size: 30px;
+
+            font-weight: 700;
+
+            letter-spacing: -1px;
+        }
+
+
+        .serashio-subtitle {
+
+            color: #888888;
+
+            font-size: 13px;
+
+            margin-top: 3px;
+        }
+
+
+        /* MAIN */
+
+        .search-main {
+
+            width: 100%;
+
+            max-width: 950px;
+
+            margin: 0 auto;
+
+            padding: 40px 25px 70px;
+        }
+
+
+        .search-heading {
+
+            font-size: 34px;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 22px;
+        }
+
+
+        /* SEARCH BOX */
+
+        .search-box {
+
+            display: flex;
+
+            width: 100%;
+
+            margin-bottom: 40px;
+        }
+
+
+        #searchInput {
+
+            flex: 1;
+
+            width: 100%;
+
+            border: 1px solid #dddddd;
+
+            border-right: none;
+
+            border-radius: 15px 0 0 15px;
+
+            padding: 16px 18px;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+
+        #searchInput:focus {
+
+            border-color: #999999;
+        }
+
+
+        #searchButton {
+
+            border: none;
+
+            background: #151515;
+
+            color: #ffffff;
+
+            padding: 0 25px;
+
+            border-radius: 0 15px 15px 0;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            cursor: pointer;
+        }
+
+
+        #searchButton:hover {
+
+            background: #333333;
+        }
+
+
+        /* SECTIONS */
+
+        .search-section {
+
+            margin-bottom: 38px;
+        }
+
+
+        .section-heading {
+
+            font-size: 19px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .results-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+
+        /* RESULT */
+
+        .result-card {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            width: 100%;
+
+            padding: 15px;
+
+            background: #ffffff;
+
+            border: 1px solid #e8e8e8;
+
+            border-radius: 16px;
+
+            color: #151515;
+
+            text-decoration: none;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .result-card:hover {
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .result-image {
+
+            width: 58px;
+
+            height: 58px;
+
+            flex-shrink: 0;
+
+            border-radius: 13px;
+
+            object-fit: cover;
+
+            background: #f1f1f1;
+        }
+
+
+        .result-placeholder {
+
+            width: 58px;
+
+            height: 58px;
+
+            flex-shrink: 0;
+
+            border-radius: 13px;
+
+            background: #f1f1f1;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #999999;
+
+            font-size: 18px;
+        }
+
+
+        .result-info {
+
+            min-width: 0;
+        }
+
+
+        .result-title {
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            margin-bottom: 4px;
+        }
+
+
+        .result-meta {
+
+            color: #888888;
+
+            font-size: 12px;
+        }
+
+
+        /* EMPTY */
+
+        .empty-result {
+
+            padding: 25px 0;
+
+            color: #999999;
+
+            font-size: 14px;
+        }
+
+
+        .initial-message {
+
+            padding: 45px 0;
+
+            color: #999999;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .serashio-header {
+                padding: 22px 20px 17px;
+            }
+
+            .search-main {
+                padding: 28px 15px 50px;
+            }
+
+            .search-heading {
+                font-size: 28px;
+            }
+
+            #searchButton {
+                padding: 0 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <header class="serashio-header">
+
+        <div class="serashio-logo">
+            Serashio
+        </div>
+
+        <div class="serashio-subtitle">
+            Official notices & updates
+        </div>
+
+    </header>
+
+
+    <main class="search-main">
+
+
+        <h1 class="search-heading">
+            Search
+        </h1>
+
+
+        <div class="search-box">
+
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Search artists, notices or music..."
+                autocomplete="off"
+            >
+
+            <button id="searchButton">
+                Search
+            </button>
+
+        </div>
+
+
+        <div
+            id="searchResults"
+        >
+
+            <div class="initial-message">
+                Search for an artist, group, notice or release.
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/search.js"></script>
+
+
+</body>
+
+</html>
