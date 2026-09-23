@@ -79,7 +79,7 @@ color: transparent;
 
 }
 
-.search_nav_button {
+.search-nav-button {
 
 color:white;
 
@@ -91,7 +91,7 @@ font-size:30px;
 
 }
 
-.search_nav_button:hover{
+.search-nav-button:hover{
 
 background-image: linear-gradient(to bottom, #24C3EF, #FFE9B7);
 
