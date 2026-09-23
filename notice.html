@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -10,8 +9,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>KiKi Post</title>
-
+    <title>Notice</title>
 
     <style>
 
@@ -19,524 +17,213 @@
             box-sizing: border-box;
         }
 
-
         body {
-
             margin: 0;
-
             background: #ffffff;
-
             color: #151515;
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
+            font-family: Arial, Helvetica, sans-serif;
         }
 
-
-        .post-page {
-
-            width: min(
-                900px,
-                calc(100% - 30px)
-            );
-
-            margin: 30px auto 60px;
-
+        .notice-page {
+            width: min(900px, calc(100% - 30px));
+            margin: 30px auto 70px;
         }
-
 
         /* =========================
            BACK BUTTON
         ========================= */
 
         .back-button {
-
             display: inline-flex;
-
             align-items: center;
-
             gap: 7px;
 
-            margin-bottom: 18px;
-
+            margin-bottom: 22px;
             padding: 9px 15px;
 
             border: 1px solid #e5e5e5;
-
             border-radius: 100px;
 
             background: #ffffff;
-
             color: #151515;
 
             font-size: 13px;
-
             cursor: pointer;
 
             transition:
                 background 0.2s ease,
                 transform 0.2s ease;
-
         }
-
 
         .back-button:hover {
-
             background: #f3f3f3;
-
-            transform:
-                translateY(-1px);
-
+            transform: translateY(-1px);
         }
 
-
         /* =========================
-           POST CARD
+           NOTICE
         ========================= */
 
-        .post-card {
-
+        .notice-card {
             background: #ffffff;
 
             border: 1px solid #e7e7e7;
-
             border-radius: 22px;
 
-            padding: 28px;
+            overflow: hidden;
 
             box-shadow:
-                0 8px 30px
-                rgba(0, 0, 0, 0.04);
-
+                0 8px 30px rgba(0, 0, 0, 0.04);
         }
 
-.reply {
-    margin-left: 45px;
-}
-
-.reply-form {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.reply-input {
-    flex: 1;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid #333;
-    background: #181818;
-    color: white;
-    outline: none;
-}
-
-.reply-submit,
-.reply-cancel {
-    border: none;
-    border-radius: 10px;
-    padding: 8px 14px;
-    cursor: pointer;
-}
-
-.reply-submit {
-    background: white;
-    color: black;
-}
-
-.reply-cancel {
-    background: #292929;
-    color: white;
-}
-
-
-        /* =========================
-           AUTHOR
-        ========================= */
-
-        .post-author {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            margin-bottom: 20px;
-
+        .notice-header {
+            padding: 30px 30px 24px;
         }
 
+        .notice-artist {
+            display: inline-block;
 
-        .post-avatar {
+            margin-bottom: 14px;
 
-            width: 48px;
+            color: #777777;
 
-            height: 48px;
-
-            border-radius: 50%;
-
-            object-fit: cover;
-
-            display: block;
-
-            flex-shrink: 0;
-
-            background: #eeeeee;
-
+            font-size: 13px;
+            font-weight: 600;
         }
 
+        .notice-title {
+            margin: 0;
 
-        .author-info {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 3px;
-
-        }
-
-
-        .author-name {
-
-            font-size: 14px;
-
+            font-size: 30px;
+            line-height: 1.25;
             font-weight: 700;
-
         }
 
-
-        .author-meta {
+        .notice-date {
+            margin-top: 10px;
 
             color: #999999;
 
             font-size: 12px;
-
         }
-
 
         /* =========================
-           POST CONTENT
+           IMAGE
         ========================= */
 
-        .post-title {
-
-            margin: 0 0 12px;
-
-            font-size: 25px;
-
-            line-height: 1.3;
-
-        }
-
-
-        .post-content {
-
-            margin: 0;
-
-            color: #444444;
-
-            font-size: 14px;
-
-            line-height: 1.8;
-
-            white-space: pre-wrap;
-
-        }
-
-
-        .post-image {
-
+        .notice-image {
             display: block;
 
             width: 100%;
-
-            max-height: 600px;
-
-            margin-top: 20px;
-
-            border-radius: 16px;
+            max-height: 550px;
 
             object-fit: cover;
-
         }
 
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .notice-content {
+            padding: 30px;
+
+            color: #444444;
+
+            font-size: 15px;
+            line-height: 1.8;
+
+            white-space: pre-wrap;
+        }
 
         /* =========================
            ACTIONS
         ========================= */
 
-        .post-actions {
-
+        .notice-actions {
             display: flex;
-
             align-items: center;
 
             gap: 8px;
 
-            margin-top: 25px;
-
-            padding-top: 18px;
-
-            border-top: 1px solid #eeeeee;
-
+            padding: 0 30px 25px;
         }
 
-
-        .post-action {
-
+        .notice-action {
             border: none;
-
-            background: transparent;
-
-            color: #555555;
-
-            padding: 9px 13px;
-
             border-radius: 100px;
+
+            padding: 9px 14px;
+
+            background: #f3f3f3;
+            color: #333333;
+
+            font-family: inherit;
+            font-size: 13px;
 
             cursor: pointer;
 
-            font-family: inherit;
-
-            font-size: 13px;
-
-            transition:
-                background 0.2s ease;
-
+            transition: background 0.2s ease;
         }
 
-
-        .post-action:hover {
-
-            background: #f2f2f2;
-
+        .notice-action:hover {
+            background: #e9e9e9;
         }
-
-
-        .post-action.liked {
-
-            color: #151515;
-
-            font-weight: 700;
-
-        }
-
 
         /* =========================
-           COMMENTS
+           MORE FROM
         ========================= */
 
-        .comments-section {
+        .more-section {
+            margin-top: 28px;
+        }
 
-            margin-top: 25px;
+        .more-title {
+            margin: 0 0 14px;
+
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .more-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .more-notice {
+            display: block;
+
+            padding: 17px 18px;
+
+            border: 1px solid #e7e7e7;
+            border-radius: 16px;
 
             background: #ffffff;
 
-            border: 1px solid #e7e7e7;
+            color: #151515;
+            text-decoration: none;
 
-            border-radius: 22px;
-
-            padding: 25px;
-
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
         }
 
-
-        .comments-title {
-
-            margin: 0 0 20px;
-
-            font-size: 18px;
-
+        .more-notice:hover {
+            background: #f7f7f7;
+            transform: translateY(-1px);
         }
 
-
-        .comment-form {
-
-            display: flex;
-
-            gap: 10px;
-
-            margin-bottom: 25px;
-
+        .more-notice-title {
+            font-size: 14px;
+            font-weight: 600;
         }
 
-
-        .comment-input {
-
-            flex: 1;
-
-            min-width: 0;
-
-            border: 1px solid #dddddd;
-
-            border-radius: 100px;
-
-            padding: 12px 16px;
-
-            outline: none;
-
-            font-family: inherit;
-
-            font-size: 13px;
-
-        }
-
-
-        .comment-input:focus {
-
-            border-color: #151515;
-
-        }
-
-
-        .comment-submit {
-
-            border: none;
-
-            border-radius: 100px;
-
-            padding: 10px 17px;
-
-            background: #151515;
-
-            color: white;
-
-            cursor: pointer;
-
-            font-family: inherit;
-
-        }
-
-
-        .comment-submit:disabled {
-
-            opacity: 0.5;
-
-            cursor: not-allowed;
-
-        }
-
-
-        .comment {
-
-            display: flex;
-
-            gap: 11px;
-
-            padding: 17px 0;
-
-            border-top: 1px solid #eeeeee;
-
-        }
-
-
-        .comment-avatar {
-
-            width: 38px;
-
-            height: 38px;
-
-            border-radius: 50%;
-
-            object-fit: cover;
-
-            flex-shrink: 0;
-
-        }
-
-
-        .comment-body {
-
-            min-width: 0;
-
-            flex: 1;
-
-        }
-
-
-        .comment-header {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 7px;
-
-            flex-wrap: wrap;
-
-        }
-
-
-        .comment-name {
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-        }
-
-
-        .comment-date {
+        .more-notice-date {
+            margin-top: 5px;
 
             color: #999999;
-
             font-size: 11px;
-
         }
-
-
-        .comment-content {
-
-            margin: 5px 0 0;
-
-            color: #444444;
-
-            font-size: 13px;
-
-            line-height: 1.6;
-
-            white-space: pre-wrap;
-
-        }
-
-
-        .reply-button {
-
-            border: none;
-
-            padding: 5px 0;
-
-            background: transparent;
-
-            color: #888888;
-
-            font-family: inherit;
-
-            font-size: 11px;
-
-            cursor: pointer;
-
-        }
-
-
-        .reply-button:hover {
-
-            color: #151515;
-
-        }
-
-
-        .reply {
-
-            margin-top: 10px;
-
-            margin-left: 20px;
-
-        }
-
 
         /* =========================
            STATES
@@ -545,551 +232,95 @@
         .loading,
         .error,
         .empty {
-
-            padding: 50px 20px;
+            padding: 60px 20px;
 
             text-align: center;
-
             color: #888888;
-
         }
 
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media (max-width: 600px) {
 
-            .post-page {
-
-                width:
-                    calc(100% - 20px);
-
+            .notice-page {
+                width: calc(100% - 20px);
                 margin-top: 15px;
-
             }
 
-
-            .post-card,
-            .comments-section {
-
-                padding: 20px;
-
-                border-radius: 18px;
-
+            .notice-header {
+                padding: 23px 20px 20px;
             }
 
-
-            .post-title {
-
-                font-size: 21px;
-
+            .notice-title {
+                font-size: 23px;
             }
 
-
-            .comment-form {
-
-                flex-direction: column;
-
+            .notice-content {
+                padding: 22px 20px;
+                font-size: 14px;
             }
 
-
-            .comment-submit {
-
-                align-self: flex-end;
-
+            .notice-actions {
+                padding: 0 20px 20px;
             }
 
         }
 
-.reply-form {
-    display: flex !important;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    margin-top: 12px;
-    pointer-events: auto !important;
-}
-
-.reply-input {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-
-    flex: 1;
-    width: 100%;
-    min-width: 0;
-
-    padding: 10px 12px;
-
-    border: 1px solid #333;
-    border-radius: 10px;
-
-    background: #181818;
-    color: white;
-
-    font-family: inherit;
-    font-size: 14px;
-
-    outline: none;
-    box-sizing: border-box;
-}
-
-.reply-input:focus {
-    border-color: #666;
-}
-
-.reply-submit,
-.reply-cancel {
-    pointer-events: auto !important;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-
     </style>
-
 </head>
 
 
 <body>
 
+    <div class="notice-page">
 
-<div class="post-page">
-
-
-    <button
-        class="back-button"
-        onclick="goBackToKiKi()">
-
-        ← Back to KiKi
-
-    </button>
+        <button
+            class="back-button"
+            onclick="goBackToSerashio()"
+        >
+            ← Back to Serashio
+        </button>
 
 
-    <main id="postContainer">
+        <main id="noticeContainer">
 
-        <div class="loading">
-            Loading post...
-        </div>
+            <div class="loading">
+                Loading notice...
+            </div>
 
-    </main>
-
-
-    <section
-        id="commentsSection"
-        class="comments-section"
-        style="display: none;">
-
-        <h2 class="comments-title">
-            Comments
-        </h2>
+        </main>
 
 
-        <form
-            id="commentForm"
-            class="comment-form">
+        <section
+            id="moreSection"
+            class="more-section"
+            style="display: none;"
+        >
 
-            <input
-                id="commentInput"
-                class="comment-input"
-                type="text"
-                maxlength="2000"
-                placeholder="Write a comment..."
-                required
+            <h2
+                id="moreTitle"
+                class="more-title"
             >
+                More from this artist
+            </h2>
 
-            <button
-                id="commentSubmit"
-                class="comment-submit"
-                type="submit">
+            <div
+                id="moreList"
+                class="more-list"
+            ></div>
 
-                Comment
+        </section>
 
-            </button>
+    </div>
 
-        </form>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        <div id="commentsList"></div>
+    <script src="js/supabase.js"></script>
 
-    </section>
-
-</div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="js/supabase.js"></script>
-
-
-<script>
-
-    /*
-     * =========================================
-     * GET POST ID
-     * =========================================
-     */
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const postId =
-        params.get("id");
-
-
-    /*
-     * =========================================
-     * ESCAPE HTML
-     * =========================================
-     */
-
-    function escapeHTML(value) {
-
-        const div =
-            document.createElement("div");
-
-        div.textContent =
-            value ?? "";
-
-        return div.innerHTML;
-
-    }
-
-
-    /*
-     * =========================================
-     * BACK TO KIKI
-     * =========================================
-     */
-
-function goBackToKiKi() {
-
-    if (
-        window.parent &&
-        window.parent !== window &&
-        typeof window.parent.loadKiKiPage === "function"
-    ) {
-
-        window.parent.loadKiKiPage(
-            "home.html"
-        );
-
-        return;
-
-    }
-
-
-    window.history.back();
-
-}
-
-
-    /*
-     * =========================================
-     * LOAD POST
-     * =========================================
-     */
-
-    async function loadPost() {
-
-        const container =
-            document.getElementById(
-                "postContainer"
-            );
-
-
-        if (!postId) {
-
-            container.innerHTML = `
-                <div class="error">
-                    This post could not be found.
-                </div>
-            `;
-
-            return;
-
-        }
-
-
-        const {
-            data: post,
-            error
-        } = await supabaseClient
-
-            .from("posts")
-
-            .select(`
-                id,
-                title,
-                content,
-                image_url,
-                is_staff_post,
-                created_at,
-
-                profiles!posts_author_id_fkey (
-                    display_name,
-                    username,
-                    avatar_url,
-                    is_staff
-                ),
-
-                artists (
-                    name,
-                    slug
-                )
-            `)
-
-            .eq(
-                "id",
-                postId
-            )
-
-            .single();
-
-
-        if (error) {
-
-            console.error(
-                "Post loading error:",
-                error
-            );
-
-
-            container.innerHTML = `
-                <div class="error">
-                    Unable to load this post.
-                </div>
-            `;
-
-            return;
-
-        }
-
-
-        const profile =
-            post.profiles;
-
-
-        const artist =
-            post.artists;
-
-
-        const avatar =
-            profile?.avatar_url ||
-            "images/default-avatar.png";
-
-
-        const displayName =
-            profile?.display_name ||
-            "KiKi user";
-
-
-        const username =
-            profile?.username
-                ? "@" + profile.username
-                : "";
-
-
-        const date =
-            new Date(
-                post.created_at
-            ).toLocaleString();
-
-
-        container.innerHTML = `
-
-            <article class="post-card">
-
-                <div class="post-author">
-
-                    <img
-                        class="post-avatar"
-                        src="${escapeHTML(avatar)}"
-                        alt=""
-                    >
-
-                    <div class="author-info">
-
-                        <span class="author-name">
-                            ${escapeHTML(displayName)}
-                        </span>
-
-                        <span class="author-meta">
-
-                            ${escapeHTML(username)}
-
-                            ${
-                                artist?.name
-                                    ? `
-                                        ·
-                                        ${escapeHTML(
-                                            artist.name
-                                        )}
-                                    `
-                                    : ""
-                            }
-
-                            ·
-                            ${escapeHTML(date)}
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <h1 class="post-title">
-
-                    ${escapeHTML(
-                        post.title || ""
-                    )}
-
-                </h1>
-
-
-                <div class="post-content">
-
-                    ${escapeHTML(
-                        post.content || ""
-                    )}
-
-                </div>
-
-
-                ${
-                    post.image_url
-                        ? `
-                            <img
-                                class="post-image"
-                                src="${escapeHTML(
-                                    post.image_url
-                                )}"
-                                alt=""
-                            >
-                        `
-                        : ""
-                }
-
-
-                <div class="post-actions">
-
-                    <button
-                        id="likeButton"
-                        class="post-action">
-
-                        ♡ Like
-                        <span id="likeCount">
-                            0
-                        </span>
-
-                    </button>
-
-
-                    <button
-                        class="post-action"
-                        onclick="
-                            document
-                            .getElementById(
-                                'commentInput'
-                            )
-                            .focus()
-                        ">
-
-                        💬 Comment
-
-                    </button>
-
-
-                    <button
-                        id="shareButton"
-                        class="post-action">
-
-                        ↗ Share
-
-                    </button>
-
-                </div>
-
-            </article>
-
-        `;
-
-
-        document.getElementById(
-            "commentsSection"
-        ).style.display =
-            "block";
-
-
-        await loadLikes();
-
-        await loadComments();
-
-    }
-
-
-
-    /*
-     * =========================================
-     * SHARE
-     * =========================================
-     */
-
-    async function sharePost() {
-
-        const url =
-            window.location.href;
-
-
-        try {
-
-            await navigator.clipboard.writeText(
-                url
-            );
-
-
-            document.getElementById(
-                "shareButton"
-            ).textContent =
-                "✓ Copied!";
-
-
-            setTimeout(
-                () => {
-
-                    document.getElementById(
-                        "shareButton"
-                    ).textContent =
-                        "↗ Share";
-
-                },
-                1800
-            );
-
-
-        } catch {
-
-            alert(
-                "Copy this URL to share the post:\n\n" +
-                url
-            );
-
-        }
-
-    }
-
-
-    /*
-     * =========================================
-     * START
-     * =========================================
-     */
-
-    loadPost();
-
-</script>
+    <script src="js/notice.js"></script>
 
 </body>
 
