@@ -1,403 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Release</title>
 
-    <title>RELEASE</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
-
-
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
-
 
         body {
-
-            background: #ffffff;
-
+            margin: 0;
+            background: #fff;
             color: #151515;
-
             font-family: "DM Sans", sans-serif;
-
-            min-height: 100vh;
         }
-
 
         .release-page {
-
-            max-width: 850px;
-
+            max-width: 950px;
             margin: 0 auto;
-
-            padding: 40px 25px 70px;
+            padding: 35px 25px 70px;
         }
 
-
-        /* =========================================
-           RELEASE HEADER
-        ========================================= */
-
-        .release-header {
-
-            display: grid;
-
-            grid-template-columns:
-                320px 1fr;
-
-            gap: 40px;
-
-            align-items: center;
-
-            margin-bottom: 45px;
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #151515;
+            text-decoration: none;
+            font-size: 14px;
         }
 
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Main release */
+
+        .release-main {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            padding-bottom: 35px;
+            border-bottom: 1px solid #e8e8e8;
+        }
 
         .release-cover {
-
-            width: 100%;
-
-            aspect-ratio: 1 / 1;
-
+            width: 280px;
+            height: 280px;
             object-fit: cover;
-
             border-radius: 18px;
-
-            background: #f1f1f1;
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.08);
-        }
-
-
-        .release-cover-placeholder {
-
-            width: 100%;
-
-            aspect-ratio: 1 / 1;
-
-            border-radius: 18px;
-
-            background: #f1f1f1;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            color: #999999;
-
-            font-size: 40px;
-        }
-
-
-        .release-artist {
-
-            color: #777777;
-
-            font-size: 14px;
-
-            margin-bottom: 8px;
-        }
-
-
-        .release-title {
-
-            font-size: 38px;
-
-            line-height: 1.1;
-
-            letter-spacing: -1.5px;
-
-            margin-bottom: 12px;
-        }
-
-
-        .release-type {
-
-            color: #888888;
-
-            font-size: 13px;
-
-            margin-bottom: 5px;
-        }
-
-
-        .release-date {
-
-            color: #888888;
-
-            font-size: 13px;
-
-            margin-bottom: 22px;
-        }
-
-
-        /* =========================================
-           COUNTDOWN
-        ========================================= */
-
-        .countdown {
-
-            padding: 16px;
-
-            border-radius: 13px;
-
-            background: #f6f6f6;
-
-            margin-bottom: 18px;
-        }
-
-
-        .countdown-label {
-
-            color: #888888;
-
-            font-size: 11px;
-
-            margin-bottom: 5px;
-        }
-
-
-        .countdown-value {
-
-            font-size: 18px;
-
-            font-weight: 600;
-        }
-
-
-        /* =========================================
-           DISTRIBUTION MESSAGE
-        ========================================= */
-
-        .distribution-message {
-
-            padding: 15px;
-
-            border-radius: 13px;
-
-            background: #f7f7f7;
-
-            color: #666666;
-
-            font-size: 13px;
-
-            line-height: 1.6;
-
-            margin-bottom: 18px;
-        }
-
-
-        /* =========================================
-           SECTION
-        ========================================= */
-
-        .section {
-
-            margin-top: 40px;
-        }
-
-
-        .section-title {
-
-            font-size: 20px;
-
-            margin-bottom: 15px;
-        }
-
-
-        /* =========================================
-           TRACKS
-        ========================================= */
-
-        .track-list {
-
-            display: flex;
-
-            flex-direction: column;
-
-            border-top: 1px solid #eeeeee;
-        }
-
-
-        .track {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 15px;
-
-            padding: 15px 5px;
-
-            border-bottom: 1px solid #eeeeee;
-        }
-
-
-        .track-number {
-
-            width: 25px;
-
-            color: #999999;
-
-            font-size: 12px;
-
+            background: #f3f3f3;
             flex-shrink: 0;
         }
 
+        .release-info {
+            padding-top: 5px;
+        }
+
+        .release-artist {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .release-title {
+            font-size: 36px;
+            line-height: 1.1;
+            margin: 0 0 10px;
+            font-weight: 700;
+        }
+
+        .release-type {
+            display: inline-block;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: #f1f1f1;
+            margin-bottom: 12px;
+        }
+
+        .release-date {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        /* Countdown */
+
+        .countdown {
+            margin-top: 15px;
+            padding: 15px 18px;
+            border-radius: 14px;
+            background: #f7f7f7;
+        }
+
+        .countdown-label {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .countdown-time {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        /* Distribution problem */
+
+        .distribution-problem {
+            margin-top: 18px;
+            padding: 15px 18px;
+            border-radius: 14px;
+            background: #fff5f5;
+            color: #8b2c2c;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Sections */
+
+        .release-section {
+            padding: 35px 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .release-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            margin: 0 0 18px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .section-text {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #444;
+            white-space: pre-line;
+        }
+
+        /* Tracks */
+
+        .track-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .track {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 15px;
+            border-radius: 12px;
+            background: #f7f7f7;
+        }
+
+        .track-number {
+            width: 28px;
+            color: #888;
+            font-size: 13px;
+        }
 
         .track-title {
-
             font-size: 14px;
         }
 
-
-        /* =========================================
-           PLATFORMS
-        ========================================= */
+        /* Platforms */
 
         .platform-list {
-
             display: flex;
-
             flex-wrap: wrap;
-
             gap: 10px;
         }
 
-
-        .platform {
-
-            display: inline-block;
-
+        .platform-link {
+            display: inline-flex;
+            align-items: center;
             padding: 10px 15px;
-
-            border: 1px solid #dddddd;
-
-            border-radius: 100px;
-
+            border-radius: 999px;
+            background: #f3f3f3;
             color: #151515;
-
             text-decoration: none;
-
-            font-size: 12px;
-
-            transition:
-                background 0.2s ease,
-                color 0.2s ease;
+            font-size: 13px;
+            transition: 0.15s ease;
         }
 
+        .platform-link:hover {
+            background: #e8e8e8;
+        }
 
-        .platform:hover {
+        /* Producer */
 
+        .producer-label {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 999px;
             background: #151515;
-
-            color: #ffffff;
+            color: #fff;
+            font-size: 12px;
+            margin-bottom: 15px;
         }
 
+        .producer-name {
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
 
-        /* =========================================
-           STATE
-        ========================================= */
+        /* Interviews */
+
+        .interview-list {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .interview {
+            padding: 20px;
+            border-radius: 16px;
+            background: #f7f7f7;
+        }
+
+        .interview-person {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .interview-role {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 13px;
+        }
+
+        .interview-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #444;
+            white-space: pre-line;
+        }
+
+        /* Socials */
+
+        .social-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .social-link {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #f1f1f1;
+            color: #151515;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.15s ease;
+        }
+
+        .social-link:hover {
+            background: #151515;
+            color: #fff;
+        }
+
+        .social-label {
+            display: none;
+        }
 
         .state {
-
-            padding: 80px 20px;
-
+            padding: 40px 0;
+            color: #777;
             text-align: center;
-
-            color: #999999;
-
-            font-size: 14px;
         }
 
-
-        /* =========================================
-           MOBILE
-        ========================================= */
-
-        @media (max-width: 700px) {
+        @media (max-width: 650px) {
 
             .release-page {
-
-                padding:
-                    25px
-                    15px
-                    50px;
+                padding: 25px 18px 50px;
             }
 
-
-            .release-header {
-
-                grid-template-columns: 1fr;
-
-                gap: 25px;
+            .release-main {
+                flex-direction: column;
             }
 
-
-            .release-cover,
-            .release-cover-placeholder {
-
-                max-width: 420px;
-
-                margin: 0 auto;
+            .release-cover {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1 / 1;
             }
-
 
             .release-title {
-
                 font-size: 30px;
             }
 
+            .producer-name {
+                font-size: 22px;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
 <main class="release-page">
 
+    <a href="javascript:history.back()" class="back-link">← Back</a>
 
-    <div
-        id="releaseContainer"
-    >
-
-        <div class="state">
-            Loading release...
-        </div>
-
+    <div id="releaseContent">
+        <div class="state">Loading release...</div>
     </div>
-
 
 </main>
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="js/supabase.js"></script>
-
 <script src="js/release.js"></script>
 
-
 </body>
-
 </html>
