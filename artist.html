@@ -54,20 +54,82 @@
 
 
         /* =========================================
-           ARTIST HEADER
+           BANNER
         ========================================= */
 
-        .artist-header {
+        .artist-banner {
+
+            width: 100%;
+
+            height: 260px;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            background: #f1f1f1;
+
+            position: relative;
+        }
+
+
+        .artist-banner img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+
+        .artist-banner-placeholder {
+
+            width: 100%;
+
+            height: 100%;
 
             display: flex;
 
             align-items: center;
 
-            gap: 22px;
+            justify-content: center;
+
+            color: #999999;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           ARTIST HEADER
+        ========================================= */
+
+        .artist-header {
+
+            position: relative;
 
             padding-bottom: 30px;
 
             border-bottom: 1px solid #eeeeee;
+        }
+
+
+        .artist-profile {
+
+            display: flex;
+
+            align-items: flex-end;
+
+            gap: 22px;
+
+            margin-top: -55px;
+
+            padding: 0 25px;
+
+            position: relative;
         }
 
 
@@ -83,7 +145,11 @@
 
             background: #f1f1f1;
 
+            border: 5px solid #ffffff;
+
             flex-shrink: 0;
+
+            display: block;
         }
 
 
@@ -97,6 +163,8 @@
 
             background: #f1f1f1;
 
+            border: 5px solid #ffffff;
+
             display: flex;
 
             align-items: center;
@@ -108,6 +176,12 @@
             font-size: 28px;
 
             flex-shrink: 0;
+        }
+
+
+        .artist-heading {
+
+            padding-bottom: 8px;
         }
 
 
@@ -136,6 +210,139 @@
 
 
         /* =========================================
+           BIO
+        ========================================= */
+
+        .artist-bio {
+
+            padding: 28px 25px 0;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+
+            color: #444444;
+
+            white-space: pre-line;
+        }
+
+
+        .artist-section-title {
+
+            font-size: 18px;
+
+            margin-bottom: 12px;
+        }
+
+
+        /* =========================================
+           FAQ
+        ========================================= */
+
+        .artist-faq {
+
+            padding: 35px 25px 0;
+        }
+
+
+        .faq-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+
+        .faq-item {
+
+            border: 1px solid #e8e8e8;
+
+            border-radius: 14px;
+
+            overflow: hidden;
+        }
+
+
+        .faq-question {
+
+            width: 100%;
+
+            border: none;
+
+            background: #ffffff;
+
+            color: #151515;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            text-align: left;
+
+            padding: 17px 18px;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+
+        .faq-question:hover {
+
+            background: #fafafa;
+        }
+
+
+        .faq-arrow {
+
+            color: #999999;
+
+            font-size: 12px;
+
+            transition:
+                transform 0.2s ease;
+        }
+
+
+        .faq-item.open .faq-arrow {
+
+            transform: rotate(180deg);
+        }
+
+
+        .faq-answer {
+
+            display: none;
+
+            padding: 0 18px 17px;
+
+            color: #777777;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            white-space: pre-line;
+        }
+
+
+        .faq-item.open .faq-answer {
+
+            display: block;
+        }
+
+
+        /* =========================================
            TABS
         ========================================= */
 
@@ -146,6 +353,8 @@
             gap: 25px;
 
             border-bottom: 1px solid #eeeeee;
+
+            margin-top: 35px;
 
             margin-bottom: 25px;
         }
@@ -389,24 +598,70 @@
             }
 
 
-            .artist-header {
+            .artist-banner {
 
-                gap: 16px;
+                height: 190px;
+
+                border-radius: 16px;
+            }
+
+
+            .artist-profile {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 10px;
+
+                margin-top: -45px;
+
+                padding: 0 15px;
             }
 
 
             .artist-avatar,
             .artist-avatar-placeholder {
 
-                width: 80px;
+                width: 90px;
 
-                height: 80px;
+                height: 90px;
+            }
+
+
+            .artist-heading {
+
+                padding-bottom: 0;
             }
 
 
             .artist-name {
 
                 font-size: 25px;
+            }
+
+
+            .artist-bio {
+
+                padding:
+                    25px
+                    15px
+                    0;
+            }
+
+
+            .artist-faq {
+
+                padding:
+                    30px
+                    15px
+                    0;
+            }
+
+
+            .artist-tabs {
+
+                margin-top: 30px;
             }
 
 
