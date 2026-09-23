@@ -128,7 +128,9 @@ async function loadArtist() {
             name,
             slug,
             description,
-            avatar_url
+            bio,
+            avatar_url,
+            banner_url
         `)
 
         .eq(
@@ -166,6 +168,9 @@ async function loadArtist() {
     renderArtistHeader();
 
 
+    await loadFAQs();
+
+
     await loadNotices();
 }
 
@@ -177,6 +182,33 @@ async function loadArtist() {
  */
 
 function renderArtistHeader() {
+
+    const banner =
+        artist.banner_url
+
+            ? `
+                <div class="artist-banner">
+
+                    <img
+                        src="${escapeHTML(
+                            artist.banner_url
+                        )}"
+                        alt=""
+                    >
+
+                </div>
+              `
+
+            : `
+                <div class="artist-banner">
+
+                    <div class="artist-banner-placeholder">
+                        No banner
+                    </div>
+
+                </div>
+              `;
+
 
     const avatar =
         artist.avatar_url
@@ -200,33 +232,220 @@ function renderArtistHeader() {
 
     artistHeader.innerHTML = `
 
-        ${avatar}
+        ${banner}
 
-        <div>
 
-            <h1 class="artist-name">
-                ${escapeHTML(
-                    artist.name
-                )}
-            </h1>
+        <div class="artist-profile">
 
-            ${
-                artist.description
+            ${avatar}
 
-                    ? `
-                        <div class="artist-description">
-                            ${escapeHTML(
-                                artist.description
-                            )}
-                        </div>
-                      `
 
-                    : ""
+            <div class="artist-heading">
+
+                <h1 class="artist-name">
+
+                    ${escapeHTML(
+                        artist.name
+                    )}
+
+                </h1>
+
+
+                ${
+                    artist.description
+
+                        ? `
+
+                            <div class="artist-description">
+
+                                ${escapeHTML(
+                                    artist.description
+                                )}
+
+                            </div>
+
+                          `
+
+                        : ""
+                }
+
+            </div>
+
+        </div>
+
+
+        ${
+            artist.bio
+
+                ? `
+
+                    <div class="artist-bio">
+
+                        <h2 class="artist-section-title">
+                            About
+                        </h2>
+
+                        ${escapeHTML(
+                            artist.bio
+                        )}
+
+                    </div>
+
+                  `
+
+                : ""
+        }
+
+
+        <div
+            id="artistFAQ"
+            class="artist-faq"
+        ></div>
+
+    `;
+}
+
+
+/*
+ * =========================================
+ * LOAD FAQS
+ * =========================================
+ */
+
+async function loadFAQs() {
+
+    const faqContainer =
+        document.getElementById(
+            "artistFAQ"
+        );
+
+
+    if (!faqContainer) {
+        return;
+    }
+
+
+    const {
+        data: faqs,
+        error
+    } = await supabaseClient
+
+        .from("artist_faqs")
+
+        .select(`
+            id,
+            question,
+            answer,
+            sort_order
+        `)
+
+        .eq(
+            "artist_id",
+            artist.id
+        )
+
+        .order(
+            "sort_order",
+            {
+                ascending: true
             }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "FAQ loading error:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (!faqs || faqs.length === 0) {
+
+        faqContainer.innerHTML = "";
+
+        return;
+    }
+
+
+    faqContainer.innerHTML = `
+
+        <h2 class="artist-section-title">
+            FAQ
+        </h2>
+
+
+        <div class="faq-list">
+
+            ${faqs.map(
+                faq => `
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            type="button"
+                            onclick="toggleFAQ(this)"
+                        >
+
+                            <span>
+                                ${escapeHTML(
+                                    faq.question
+                                )}
+                            </span>
+
+
+                            <span class="faq-arrow">
+                                ▼
+                            </span>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            ${escapeHTML(
+                                faq.answer
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `
+            ).join("")}
 
         </div>
 
     `;
+}
+
+
+/*
+ * =========================================
+ * FAQ TOGGLE
+ * =========================================
+ */
+
+function toggleFAQ(button) {
+
+    const item =
+        button.closest(
+            ".faq-item"
+        );
+
+
+    if (!item) {
+        return;
+    }
+
+
+    item.classList.toggle(
+        "open"
+    );
 }
 
 
@@ -239,9 +458,11 @@ function renderArtistHeader() {
 async function loadNotices() {
 
     tabContent.innerHTML = `
+
         <div class="state">
             Loading notices...
         </div>
+
     `;
 
 
@@ -281,9 +502,11 @@ async function loadNotices() {
 
 
         tabContent.innerHTML = `
+
             <div class="state">
                 Unable to load notices.
             </div>
+
         `;
 
         return;
@@ -309,9 +532,11 @@ function renderNotices(
     if (notices.length === 0) {
 
         tabContent.innerHTML = `
+
             <div class="state">
                 No notices yet.
             </div>
+
         `;
 
         return;
@@ -350,23 +575,31 @@ function renderNotices(
             card.innerHTML = `
 
                 <div class="notice-date">
+
                     ${escapeHTML(
                         formatDate(
                             notice.created_at
                         )
                     )}
+
                 </div>
 
+
                 <h2 class="notice-title">
+
                     ${escapeHTML(
                         notice.title
                     )}
+
                 </h2>
 
+
                 <div class="notice-excerpt">
+
                     ${escapeHTML(
                         notice.content
                     )}
+
                 </div>
 
             `;
@@ -397,9 +630,11 @@ function renderNotices(
 async function loadMusic() {
 
     tabContent.innerHTML = `
+
         <div class="state">
             Loading music...
         </div>
+
     `;
 
 
@@ -440,9 +675,11 @@ async function loadMusic() {
 
 
         tabContent.innerHTML = `
+
             <div class="state">
                 Unable to load music.
             </div>
+
         `;
 
         return;
@@ -468,9 +705,11 @@ function renderMusic(
     if (releases.length === 0) {
 
         tabContent.innerHTML = `
+
             <div class="state">
                 No releases yet.
             </div>
+
         `;
 
         return;
@@ -499,10 +738,11 @@ function renderMusic(
             card.className =
                 "release-card";
 
+
             card.href =
                 `release.html?id=${encodeURIComponent(
-                release.id
-            )}`;
+                    release.id
+                )}`;
 
 
             card.innerHTML = `
@@ -511,6 +751,7 @@ function renderMusic(
                     release.cover_url
 
                         ? `
+
                             <img
                                 class="release-cover"
                                 src="${escapeHTML(
@@ -518,9 +759,11 @@ function renderMusic(
                                 )}"
                                 alt=""
                             >
+
                           `
 
                         : `
+
                             <div
                                 class="release-cover"
                                 style="
@@ -530,8 +773,11 @@ function renderMusic(
                                     color:#999;
                                 "
                             >
+
                                 ♪
+
                             </div>
+
                           `
                 }
 
@@ -539,9 +785,11 @@ function renderMusic(
                 <div class="release-info">
 
                     <div class="release-title">
+
                         ${escapeHTML(
                             release.title
                         )}
+
                     </div>
 
 
@@ -551,9 +799,10 @@ function renderMusic(
                             release.type
                                 ? escapeHTML(
                                     release.type
-                                  )
+                                )
                                 : ""
                         }
+
 
                         ${
                             release.release_date
@@ -631,7 +880,11 @@ function switchTab(
 noticesTab.addEventListener(
     "click",
     () => {
-        switchTab("notices");
+
+        switchTab(
+            "notices"
+        );
+
     }
 );
 
@@ -639,7 +892,11 @@ noticesTab.addEventListener(
 musicTab.addEventListener(
     "click",
     () => {
-        switchTab("music");
+
+        switchTab(
+            "music"
+        );
+
     }
 );
 
@@ -655,11 +912,15 @@ function showError(
 ) {
 
     artistHeader.innerHTML = `
+
         <div class="state">
+
             ${escapeHTML(
                 message
             )}
+
         </div>
+
     `;
 
 
