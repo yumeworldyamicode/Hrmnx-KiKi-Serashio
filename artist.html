@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Artist — Serashio</title>
+
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            background: #ffffff;
+
+            color: #151515;
+
+            font-family: "DM Sans", sans-serif;
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================================
+           PAGE
+        ========================================= */
+
+        .artist-page {
+
+            width: 100%;
+
+            max-width: 950px;
+
+            margin: 0 auto;
+
+            padding: 35px 25px 70px;
+        }
+
+
+        /* =========================================
+           ARTIST HEADER
+        ========================================= */
+
+        .artist-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 22px;
+
+            padding-bottom: 30px;
+
+            border-bottom: 1px solid #eeeeee;
+        }
+
+
+        .artist-avatar {
+
+            width: 110px;
+
+            height: 110px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background: #f1f1f1;
+
+            flex-shrink: 0;
+        }
+
+
+        .artist-avatar-placeholder {
+
+            width: 110px;
+
+            height: 110px;
+
+            border-radius: 50%;
+
+            background: #f1f1f1;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #999999;
+
+            font-size: 28px;
+
+            flex-shrink: 0;
+        }
+
+
+        .artist-name {
+
+            font-size: 32px;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .artist-description {
+
+            color: #777777;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            max-width: 650px;
+
+            white-space: pre-line;
+        }
+
+
+        /* =========================================
+           TABS
+        ========================================= */
+
+        .artist-tabs {
+
+            display: flex;
+
+            gap: 25px;
+
+            border-bottom: 1px solid #eeeeee;
+
+            margin-bottom: 25px;
+        }
+
+
+        .artist-tab {
+
+            border: none;
+
+            background: none;
+
+            padding: 16px 2px 13px;
+
+            color: #999999;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            border-bottom: 2px solid transparent;
+        }
+
+
+        .artist-tab:hover {
+
+            color: #555555;
+        }
+
+
+        .artist-tab.active {
+
+            color: #151515;
+
+            border-bottom-color: #151515;
+        }
+
+
+        /* =========================================
+           CONTENT
+        ========================================= */
+
+        .tab-content {
+
+            min-height: 200px;
+        }
+
+
+        .notice-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 15px;
+        }
+
+
+        /* =========================================
+           NOTICE
+        ========================================= */
+
+        .notice-card {
+
+            display: block;
+
+            text-decoration: none;
+
+            color: #151515;
+
+            border: 1px solid #e8e8e8;
+
+            border-radius: 17px;
+
+            padding: 20px;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .notice-card:hover {
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .notice-date {
+
+            color: #999999;
+
+            font-size: 11px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .notice-title {
+
+            font-size: 17px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .notice-excerpt {
+
+            color: #777777;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            display: -webkit-box;
+
+            -webkit-line-clamp: 2;
+
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================
+           MUSIC
+        ========================================= */
+
+        .release-list {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+
+        .release-card {
+
+            display: block;
+
+            color: #151515;
+
+            text-decoration: none;
+
+            border: 1px solid #e8e8e8;
+
+            border-radius: 17px;
+
+            overflow: hidden;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .release-card:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.06);
+        }
+
+
+        .release-cover {
+
+            display: block;
+
+            width: 100%;
+
+            aspect-ratio: 1 / 1;
+
+            object-fit: cover;
+
+            background: #f1f1f1;
+        }
+
+
+        .release-info {
+
+            padding: 16px;
+        }
+
+
+        .release-title {
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            margin-bottom: 5px;
+        }
+
+
+        .release-meta {
+
+            color: #888888;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================
+           STATES
+        ========================================= */
+
+        .state {
+
+            padding: 50px 10px;
+
+            text-align: center;
+
+            color: #999999;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 650px) {
+
+            .artist-page {
+
+                padding:
+                    25px
+                    15px
+                    50px;
+            }
+
+
+            .artist-header {
+
+                gap: 16px;
+            }
+
+
+            .artist-avatar,
+            .artist-avatar-placeholder {
+
+                width: 80px;
+
+                height: 80px;
+            }
+
+
+            .artist-name {
+
+                font-size: 25px;
+            }
+
+
+            .release-list {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="artist-page">
+
+
+    <!-- =========================================
+         ARTIST HEADER
+    ========================================= -->
+
+    <section
+        id="artistHeader"
+        class="artist-header"
+    >
+
+        <div class="state">
+            Loading...
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         TABS
+    ========================================= -->
+
+    <nav class="artist-tabs">
+
+        <button
+            id="noticesTab"
+            class="artist-tab active"
+            type="button"
+        >
+            Notices
+        </button>
+
+
+        <button
+            id="musicTab"
+            class="artist-tab"
+            type="button"
+        >
+            Music
+        </button>
+
+    </nav>
+
+
+    <!-- =========================================
+         TAB CONTENT
+    ========================================= -->
+
+    <section
+        id="tabContent"
+        class="tab-content"
+    >
+
+        <div class="state">
+            Loading...
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/artist.js"></script>
+
+
+</body>
+
+</html>
