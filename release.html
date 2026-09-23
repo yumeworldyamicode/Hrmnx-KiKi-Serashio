@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>RELEASE</title>
+
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            background: #ffffff;
+
+            color: #151515;
+
+            font-family: "DM Sans", sans-serif;
+
+            min-height: 100vh;
+        }
+
+
+        .release-page {
+
+            max-width: 850px;
+
+            margin: 0 auto;
+
+            padding: 40px 25px 70px;
+        }
+
+
+        /* =========================================
+           RELEASE HEADER
+        ========================================= */
+
+        .release-header {
+
+            display: grid;
+
+            grid-template-columns:
+                320px 1fr;
+
+            gap: 40px;
+
+            align-items: center;
+
+            margin-bottom: 45px;
+        }
+
+
+        .release-cover {
+
+            width: 100%;
+
+            aspect-ratio: 1 / 1;
+
+            object-fit: cover;
+
+            border-radius: 18px;
+
+            background: #f1f1f1;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .release-cover-placeholder {
+
+            width: 100%;
+
+            aspect-ratio: 1 / 1;
+
+            border-radius: 18px;
+
+            background: #f1f1f1;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #999999;
+
+            font-size: 40px;
+        }
+
+
+        .release-artist {
+
+            color: #777777;
+
+            font-size: 14px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .release-title {
+
+            font-size: 38px;
+
+            line-height: 1.1;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .release-type {
+
+            color: #888888;
+
+            font-size: 13px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .release-date {
+
+            color: #888888;
+
+            font-size: 13px;
+
+            margin-bottom: 22px;
+        }
+
+
+        /* =========================================
+           COUNTDOWN
+        ========================================= */
+
+        .countdown {
+
+            padding: 16px;
+
+            border-radius: 13px;
+
+            background: #f6f6f6;
+
+            margin-bottom: 18px;
+        }
+
+
+        .countdown-label {
+
+            color: #888888;
+
+            font-size: 11px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .countdown-value {
+
+            font-size: 18px;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           DISTRIBUTION MESSAGE
+        ========================================= */
+
+        .distribution-message {
+
+            padding: 15px;
+
+            border-radius: 13px;
+
+            background: #f7f7f7;
+
+            color: #666666;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================================
+           SECTION
+        ========================================= */
+
+        .section {
+
+            margin-top: 40px;
+        }
+
+
+        .section-title {
+
+            font-size: 20px;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================================
+           TRACKS
+        ========================================= */
+
+        .track-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            border-top: 1px solid #eeeeee;
+        }
+
+
+        .track {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 15px 5px;
+
+            border-bottom: 1px solid #eeeeee;
+        }
+
+
+        .track-number {
+
+            width: 25px;
+
+            color: #999999;
+
+            font-size: 12px;
+
+            flex-shrink: 0;
+        }
+
+
+        .track-title {
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           PLATFORMS
+        ========================================= */
+
+        .platform-list {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+        }
+
+
+        .platform {
+
+            display: inline-block;
+
+            padding: 10px 15px;
+
+            border: 1px solid #dddddd;
+
+            border-radius: 100px;
+
+            color: #151515;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .platform:hover {
+
+            background: #151515;
+
+            color: #ffffff;
+        }
+
+
+        /* =========================================
+           STATE
+        ========================================= */
+
+        .state {
+
+            padding: 80px 20px;
+
+            text-align: center;
+
+            color: #999999;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 700px) {
+
+            .release-page {
+
+                padding:
+                    25px
+                    15px
+                    50px;
+            }
+
+
+            .release-header {
+
+                grid-template-columns: 1fr;
+
+                gap: 25px;
+            }
+
+
+            .release-cover,
+            .release-cover-placeholder {
+
+                max-width: 420px;
+
+                margin: 0 auto;
+            }
+
+
+            .release-title {
+
+                font-size: 30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="release-page">
+
+
+    <div
+        id="releaseContainer"
+    >
+
+        <div class="state">
+            Loading release...
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/release.js"></script>
+
+
+</body>
+
+</html>
