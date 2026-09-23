@@ -499,21 +499,10 @@ function renderMusic(
             card.className =
                 "release-card";
 
-
-            /*
-             * For now, clicking a release
-             * returns to the artist page.
-             *
-             * We can make a dedicated
-             * release page later.
-             */
-
             card.href =
-                `artist.html?slug=${encodeURIComponent(
-                    artist.slug
-                )}&release=${encodeURIComponent(
-                    release.id
-                )}`;
+                `release.html?id=${encodeURIComponent(
+                release.id
+            )}`;
 
 
             card.innerHTML = `
