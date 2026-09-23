@@ -79,6 +79,29 @@ color: transparent;
 
 }
 
+.search_nav_button {
+
+color:white;
+
+text-decoration:none;
+
+transition:.3s;
+
+font-size:30px;
+
+}
+
+.search_nav_button:hover{
+
+background-image: linear-gradient(to bottom, #24C3EF, #FFE9B7);
+
+background-clip: text;
+-webkit-background-clip: text;
+
+color: transparent;
+
+}
+
 h1, h2, h3, p{
     font-family: "DM Sans", sans-serif;
     color: black;
