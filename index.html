@@ -20,33 +20,119 @@ content="Hrmnx Entertainment,Harmonia Chiyo Tanaka,HOSHIZORA CO,ShiKei SU,Harmon
 <meta property="og:image" content="images/Logo.png">
 
 <link rel="stylesheet" href="css/style.css">
+
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Jersey+20&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+
+/* =========================================
+   IFRAME FADE
+========================================= */
+
+#pageFrame {
+
+    opacity: 1;
+
+    transition:
+        opacity 0.25s ease;
+
+}
+
+
+/* =========================================
+   SEARCH BUTTON
+========================================= */
+
+.search-nav-button {
+
+    cursor: pointer;
+
+    border: none;
+
+    background: none;
+
+    color: inherit;
+
+    font: inherit;
+
+    padding: 0;
+
+}
+
+
+.search-nav-button:hover {
+
+    opacity: 0.7;
+
+}
+
 </style>
 
+</head>
+
+
 <body>
+
+
 <header>
 
+
 <div class="logo" style="display: flex">
-  <img src="images/logo2.png" style="width: 80px;">
-  <p style="color: #ffffff">×</p>
-  <img src="images/logo3.png" style="width: 150px;">
+
+    <img
+        src="images/logo2.png"
+        style="width: 80px;"
+    >
+
+    <p style="color: #ffffff">
+        ×
+    </p>
+
+    <img
+        src="images/logo3.png"
+        style="width: 150px;"
+    >
+
 </div>
+
 
 <nav>
 
-<a href="home.html">Home</a>
+    <a
+        href="home.html"
+        onclick="loadPage(event, 'home.html')"
+    >
+        Home
+    </a>
 
-<a href="#artists">Artists</a>
+
+    <a href="#artists">
+        Artists
+    </a>
+
+
+    <button
+        class="search-nav-button"
+        onclick="loadPage(event, 'search.html')"
+    >
+        Search
+    </button>
 
 </nav>
 
+
 </header>
+
 
 <main class="main-container">
 
-    <div class="iframe-wrapper" id="pageContainer">
+
+    <div
+        class="iframe-wrapper"
+        id="pageContainer"
+    >
 
         <iframe
             id="pageFrame"
@@ -56,8 +142,101 @@ content="Hrmnx Entertainment,Harmonia Chiyo Tanaka,HOSHIZORA CO,ShiKei SU,Harmon
 
     </div>
 
+
 </main>
+
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="js/supabase.js"></script>
+
+
+<script>
+
+
+/* =========================================
+   PAGE NAVIGATION
+========================================= */
+
+function loadPage(
+    event,
+    page
+) {
+
+    if (event) {
+
+        event.preventDefault();
+
+    }
+
+
+    const frame =
+        document.getElementById(
+            "pageFrame"
+        );
+
+
+    if (!frame) {
+        return;
+    }
+
+
+    /*
+     * Fade current page out
+     */
+
+    frame.style.opacity = "0";
+
+
+    /*
+     * Wait for fade-out,
+     * then change iframe page
+     */
+
+    setTimeout(
+        function() {
+
+            frame.src = page;
+
+        },
+        250
+    );
+
+}
+
+
+/* =========================================
+   FADE PAGE BACK IN
+========================================= */
+
+document
+    .getElementById("pageFrame")
+    .addEventListener(
+        "load",
+        function() {
+
+            const frame = this;
+
+
+            /*
+             * Small delay makes
+             * the transition smoother.
+             */
+
+            requestAnimationFrame(
+                function() {
+
+                    frame.style.opacity = "1";
+
+                }
+            );
+
+        }
+    );
+
+
+</script>
+
+
 </body>
 </html>
