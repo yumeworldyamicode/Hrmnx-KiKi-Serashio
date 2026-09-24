@@ -181,7 +181,8 @@ async function loadRelease() {
         .from("release_tracks")
         .select(`
             track_number,
-            title
+            title,
+            teaser_url
         `)
         .eq("release_id", release.id)
         .order("track_number", {
@@ -657,6 +658,13 @@ async function loadRelease() {
 
         </section>
 
+        <button
+            id="openTeaserButton"
+            class="teaser-open-button"
+            type="button"
+        >
+            Listen to the songs teasers
+        </button>
 
         <section class="release-section">
 
