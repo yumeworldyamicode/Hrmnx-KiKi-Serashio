@@ -65,7 +65,8 @@ function getSocialIcon(platform) {
 
 function startCountdown(date) {
 
-    const countdownElement = document.getElementById("countdownTime");
+    const countdownElement =
+        document.getElementById("countdownTime");
 
     if (!countdownElement) return;
 
@@ -114,8 +115,10 @@ function startCountdown(date) {
 async function loadRelease() {
 
     if (!releaseId) {
+
         releaseContent.innerHTML =
             `<div class="state">Release not found.</div>`;
+
         return;
     }
 
@@ -658,6 +661,7 @@ async function loadRelease() {
 
         </section>
 
+
         <button
             id="openTeaserButton"
             class="teaser-open-button"
@@ -665,6 +669,7 @@ async function loadRelease() {
         >
             Listen to the songs teasers
         </button>
+
 
         <section class="release-section">
 
@@ -703,7 +708,16 @@ async function loadRelease() {
     `;
 
 
-    /* Start countdown after HTML exists */
+    /* =========================
+       SETUP SONG TEASERS
+    ========================= */
+
+    setupTeaserPlayer(tracks);
+
+
+    /* =========================
+       START COUNTDOWN
+    ========================= */
 
     if (
         release.release_date &&
@@ -714,8 +728,6 @@ async function loadRelease() {
     }
 }
 
-
-loadRelease();
 
 /* =========================
    TEASER PLAYER
@@ -751,10 +763,28 @@ function setupTeaserPlayer(tracks) {
     const openButton =
         document.getElementById("openTeaserButton");
 
-    if (!openButton) return;
+    if (
+        !openButton ||
+        !teaserOverlay ||
+        !teaserClose ||
+        !teaserTrackList ||
+        !teaserAudio ||
+        !teaserPlayer ||
+        !teaserCurrentTrack ||
+        !teaserPlay ||
+        !teaserPause
+    ) {
+        console.error(
+            "Teaser player elements are missing from release.html."
+        );
+
+        return;
+    }
 
 
-    /* Open overlay */
+    /* =========================
+       OPEN OVERLAY
+    ========================= */
 
     openButton.addEventListener("click", () => {
 
@@ -766,55 +796,106 @@ function setupTeaserPlayer(tracks) {
     });
 
 
-    /* Close overlay */
+    /* =========================
+       CLOSE OVERLAY
+    ========================= */
 
-    teaserClose.addEventListener("click", closeTeaserOverlay);
+    teaserClose.addEventListener(
+        "click",
+        closeTeaserOverlay
+    );
 
 
-    teaserOverlay.addEventListener("click", (event) => {
+    teaserOverlay.addEventListener(
+        "click",
+        (event) => {
 
-        if (event.target === teaserOverlay) {
-            closeTeaserOverlay();
+            if (event.target === teaserOverlay) {
+                closeTeaserOverlay();
+            }
+
         }
-
-    });
-
-
-    /* Play */
-
-    teaserPlay.addEventListener("click", () => {
-
-        if (!teaserAudio.src) return;
-
-        teaserAudio.play();
-    });
+    );
 
 
-    /* Pause */
+    /* =========================
+       PLAY
+    ========================= */
 
-    teaserPause.addEventListener("click", () => {
+    teaserPlay.addEventListener(
+        "click",
+        () => {
 
-        teaserAudio.pause();
-    });
+            if (!teaserAudio.src) return;
 
+            teaserAudio.play().catch(error => {
 
-    /* Reset when teaser finishes */
+                console.error(
+                    "Could not play teaser:",
+                    error
+                );
 
-    teaserAudio.addEventListener("ended", () => {
-
-        document
-            .querySelectorAll(".teaser-play-button")
-            .forEach(button => {
-                button.classList.remove("playing");
-                button.textContent =
-                    "Listen to this track's teaser";
             });
 
-    });
+        }
+    );
+
+
+    /* =========================
+       PAUSE
+    ========================= */
+
+    teaserPause.addEventListener(
+        "click",
+        () => {
+
+            teaserAudio.pause();
+
+        }
+    );
+
+
+    /* =========================
+       RESET WHEN FINISHED
+    ========================= */
+
+    teaserAudio.addEventListener(
+        "ended",
+        () => {
+
+            document
+                .querySelectorAll(
+                    ".teaser-play-button"
+                )
+                .forEach(button => {
+
+                    button.classList.remove(
+                        "playing"
+                    );
+
+                    if (!button.disabled) {
+
+                        button.textContent =
+                            "Listen to this track's teaser";
+
+                    }
+
+                });
+
+        }
+    );
 }
 
 
+/* =========================
+   CLOSE TEASER OVERLAY
+========================= */
+
 function closeTeaserOverlay() {
+
+    if (!teaserAudio || !teaserOverlay) {
+        return;
+    }
 
     teaserAudio.pause();
 
@@ -828,11 +909,27 @@ function closeTeaserOverlay() {
 
     document.body.style.overflow = "";
 
-    teaserPlayer.classList.remove("active");
+    if (teaserPlayer) {
+        teaserPlayer.classList.remove("active");
+    }
+
+    if (teaserCurrentTrack) {
+        teaserCurrentTrack.textContent =
+            "No teaser selected";
+    }
 }
 
 
+/* =========================
+   RENDER TEASER TRACKS
+========================= */
+
 function renderTeaserTracks(tracks) {
+
+    if (!teaserTrackList) {
+        return;
+    }
+
 
     if (!tracks || tracks.length === 0) {
 
@@ -862,7 +959,8 @@ function renderTeaserTracks(tracks) {
 
                         <div class="teaser-track-number">
                             ${escapeHTML(
-                                track.track_number || index + 1
+                                track.track_number ||
+                                index + 1
                             )}
                         </div>
 
@@ -907,44 +1005,73 @@ function renderTeaserTracks(tracks) {
 
 
     document
-        .querySelectorAll(".teaser-play-button:not([disabled])")
+        .querySelectorAll(
+            ".teaser-play-button:not([disabled])"
+        )
         .forEach(button => {
 
-            button.addEventListener("click", () => {
+            button.addEventListener(
+                "click",
+                () => {
 
-                playTeaser(
-                    button.dataset.url,
-                    button.dataset.title,
-                    button
-                );
+                    playTeaser(
+                        button.dataset.url,
+                        button.dataset.title,
+                        button
+                    );
 
-            });
+                }
+            );
 
         });
 }
 
 
+/* =========================
+   PLAY TEASER
+========================= */
+
 function playTeaser(url, title, button) {
 
-    /* Stop anything currently playing */
+    if (
+        !teaserAudio ||
+        !teaserCurrentTrack ||
+        !teaserPlayer
+    ) {
+        return;
+    }
+
+
+    /* =========================
+       STOP CURRENT TEASER
+    ========================= */
 
     teaserAudio.pause();
 
+
     document
-        .querySelectorAll(".teaser-play-button")
+        .querySelectorAll(
+            ".teaser-play-button"
+        )
         .forEach(otherButton => {
 
-            otherButton.classList.remove("playing");
+            otherButton.classList.remove(
+                "playing"
+            );
 
             if (!otherButton.disabled) {
+
                 otherButton.textContent =
                     "Listen to this track's teaser";
+
             }
 
         });
 
 
-    /* Load new teaser */
+    /* =========================
+       LOAD NEW TEASER
+    ========================= */
 
     teaserAudio.src = url;
 
@@ -958,7 +1085,9 @@ function playTeaser(url, title, button) {
     button.textContent = "Playing...";
 
 
-    /* Start */
+    /* =========================
+       START
+    ========================= */
 
     teaserAudio.play().catch(error => {
 
@@ -969,3 +1098,10 @@ function playTeaser(url, title, button) {
 
     });
 }
+
+
+/* =========================
+   START
+========================= */
+
+loadRelease();
