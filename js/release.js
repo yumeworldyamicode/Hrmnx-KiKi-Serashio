@@ -716,3 +716,256 @@ async function loadRelease() {
 
 
 loadRelease();
+
+/* =========================
+   TEASER PLAYER
+========================= */
+
+const teaserOverlay =
+    document.getElementById("teaserOverlay");
+
+const teaserClose =
+    document.getElementById("teaserClose");
+
+const teaserTrackList =
+    document.getElementById("teaserTrackList");
+
+const teaserAudio =
+    document.getElementById("teaserAudio");
+
+const teaserPlayer =
+    document.getElementById("teaserPlayer");
+
+const teaserCurrentTrack =
+    document.getElementById("teaserCurrentTrack");
+
+const teaserPlay =
+    document.getElementById("teaserPlay");
+
+const teaserPause =
+    document.getElementById("teaserPause");
+
+
+function setupTeaserPlayer(tracks) {
+
+    const openButton =
+        document.getElementById("openTeaserButton");
+
+    if (!openButton) return;
+
+
+    /* Open overlay */
+
+    openButton.addEventListener("click", () => {
+
+        teaserOverlay.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+
+        renderTeaserTracks(tracks);
+    });
+
+
+    /* Close overlay */
+
+    teaserClose.addEventListener("click", closeTeaserOverlay);
+
+
+    teaserOverlay.addEventListener("click", (event) => {
+
+        if (event.target === teaserOverlay) {
+            closeTeaserOverlay();
+        }
+
+    });
+
+
+    /* Play */
+
+    teaserPlay.addEventListener("click", () => {
+
+        if (!teaserAudio.src) return;
+
+        teaserAudio.play();
+    });
+
+
+    /* Pause */
+
+    teaserPause.addEventListener("click", () => {
+
+        teaserAudio.pause();
+    });
+
+
+    /* Reset when teaser finishes */
+
+    teaserAudio.addEventListener("ended", () => {
+
+        document
+            .querySelectorAll(".teaser-play-button")
+            .forEach(button => {
+                button.classList.remove("playing");
+                button.textContent =
+                    "Listen to this track's teaser";
+            });
+
+    });
+}
+
+
+function closeTeaserOverlay() {
+
+    teaserAudio.pause();
+
+    teaserAudio.currentTime = 0;
+
+    teaserAudio.removeAttribute("src");
+
+    teaserAudio.load();
+
+    teaserOverlay.classList.remove("active");
+
+    document.body.style.overflow = "";
+
+    teaserPlayer.classList.remove("active");
+}
+
+
+function renderTeaserTracks(tracks) {
+
+    if (!tracks || tracks.length === 0) {
+
+        teaserTrackList.innerHTML = `
+            <div class="section-text">
+                No song teasers are available yet.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    teaserTrackList.innerHTML =
+        tracks.map((track, index) => {
+
+            const hasTeaser =
+                track.teaser_url &&
+                track.teaser_url.trim() !== "";
+
+
+            return `
+
+                <div class="teaser-track">
+
+                    <div class="teaser-track-info">
+
+                        <div class="teaser-track-number">
+                            ${escapeHTML(
+                                track.track_number || index + 1
+                            )}
+                        </div>
+
+                        <div class="teaser-track-title">
+                            ${escapeHTML(track.title)}
+                        </div>
+
+                    </div>
+
+
+                    ${
+                        hasTeaser
+
+                        ? `
+                            <button
+                                class="teaser-play-button"
+                                type="button"
+                                data-url="${escapeHTML(track.teaser_url)}"
+                                data-title="${escapeHTML(track.title)}"
+                            >
+                                Listen to this track's teaser
+                            </button>
+                        `
+
+                        : `
+                            <button
+                                class="teaser-play-button"
+                                type="button"
+                                disabled
+                                style="opacity:0.4;cursor:not-allowed;"
+                            >
+                                Teaser unavailable
+                            </button>
+                        `
+                    }
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    document
+        .querySelectorAll(".teaser-play-button:not([disabled])")
+        .forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                playTeaser(
+                    button.dataset.url,
+                    button.dataset.title,
+                    button
+                );
+
+            });
+
+        });
+}
+
+
+function playTeaser(url, title, button) {
+
+    /* Stop anything currently playing */
+
+    teaserAudio.pause();
+
+    document
+        .querySelectorAll(".teaser-play-button")
+        .forEach(otherButton => {
+
+            otherButton.classList.remove("playing");
+
+            if (!otherButton.disabled) {
+                otherButton.textContent =
+                    "Listen to this track's teaser";
+            }
+
+        });
+
+
+    /* Load new teaser */
+
+    teaserAudio.src = url;
+
+    teaserCurrentTrack.textContent =
+        title;
+
+    teaserPlayer.classList.add("active");
+
+    button.classList.add("playing");
+
+    button.textContent = "Playing...";
+
+
+    /* Start */
+
+    teaserAudio.play().catch(error => {
+
+        console.error(
+            "Could not play teaser:",
+            error
+        );
+
+    });
+}
