@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Serashio — Artist Messages</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #ffffff;
+            color: #151515;
+            font-family: "DM Sans", sans-serif;
+            min-height: 100vh;
+        }
+
+        .inbox {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 35px 25px 60px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        .header p {
+            color: #888888;
+            font-size: 14px;
+        }
+
+        .artist-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .artist-card {
+            border: 1px solid #e7e7e7;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .artist-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f2f2f2;
+            flex-shrink: 0;
+        }
+
+        .artist-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .artist-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .artist-meta {
+            color: #888888;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .open-button {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 16px;
+            background: #151515;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .empty {
+            padding: 60px 20px;
+            text-align: center;
+            color: #999999;
+            font-size: 14px;
+        }
+
+        .error {
+            padding: 25px;
+            border-radius: 14px;
+            background: #f7f7f7;
+            color: #777777;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+
+            .inbox {
+                padding: 25px 15px 50px;
+            }
+
+            .artist-card {
+                padding: 15px;
+            }
+
+            .open-button {
+                padding: 9px 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="inbox">
+
+        <header class="header">
+
+            <h1>
+                Artist Messages
+            </h1>
+
+            <p>
+                Conversations assigned to your artist account.
+            </p>
+
+        </header>
+
+
+        <section
+            id="artistList"
+            class="artist-list"
+        >
+
+            <div class="empty">
+                Loading...
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/artist-dms.js"></script>
+
+</body>
+
+</html>
