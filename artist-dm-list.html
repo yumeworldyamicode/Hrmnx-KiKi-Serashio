@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Serashio — Conversations</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #ffffff;
+            color: #151515;
+            font-family: "DM Sans", sans-serif;
+            min-height: 100vh;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 35px 25px 60px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .back {
+            border: none;
+            background: none;
+            padding: 0;
+            margin-bottom: 18px;
+            color: #777777;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: #888888;
+            font-size: 14px;
+        }
+
+        .conversation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .conversation {
+            width: 100%;
+            border: 1px solid #e7e7e7;
+            border-radius: 16px;
+            padding: 18px 20px;
+            background: #ffffff;
+            text-align: left;
+            font-family: inherit;
+            cursor: pointer;
+            transition:
+                transform 0.15s ease,
+                box-shadow 0.15s ease;
+        }
+
+        .conversation:hover {
+            transform: translateY(-1px);
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.05);
+        }
+
+        .conversation-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .conversation-id {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .conversation-status {
+            font-size: 11px;
+            padding: 5px 9px;
+            border-radius: 100px;
+            background: #f2f2f2;
+            color: #777777;
+            white-space: nowrap;
+        }
+
+        .conversation-meta {
+            margin-top: 8px;
+            color: #888888;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .empty {
+            padding: 60px 20px;
+            text-align: center;
+            color: #999999;
+            font-size: 14px;
+        }
+
+        .error {
+            padding: 25px;
+            border-radius: 14px;
+            background: #f7f7f7;
+            color: #777777;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+
+            .page {
+                padding: 25px 15px 50px;
+            }
+
+            .conversation {
+                padding: 16px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="page">
+
+        <header class="header">
+
+            <button
+                class="back"
+                id="backButton"
+                type="button"
+            >
+                ← Artist messages
+            </button>
+
+            <h1 id="artistName">
+                Loading...
+            </h1>
+
+            <p>
+                Conversations with fans
+            </p>
+
+        </header>
+
+
+        <section
+            id="conversationList"
+            class="conversation-list"
+        >
+
+            <div class="empty">
+                Loading conversations...
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/artist-dm-list.js"></script>
+
+</body>
+
+</html>
