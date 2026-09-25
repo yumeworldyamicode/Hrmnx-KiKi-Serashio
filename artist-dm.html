@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Serashio — Artist DM</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #ffffff;
+            color: #151515;
+            font-family: "DM Sans", sans-serif;
+        }
+
+        .dm-page {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dm-header {
+            padding: 22px 25px;
+            border-bottom: 1px solid #eeeeee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-button {
+            border: none;
+            background: none;
+            color: #151515;
+            font-family: inherit;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .artist-name {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .conversation-number {
+            margin-top: 3px;
+            color: #888888;
+            font-size: 12px;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 11px 15px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .message.fan {
+            align-self: flex-start;
+            background: #f1f1f1;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message.artist {
+            align-self: flex-end;
+            background: #151515;
+            color: #ffffff;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-time {
+            margin-top: 5px;
+            font-size: 10px;
+            opacity: 0.55;
+        }
+
+        .empty {
+            text-align: center;
+            color: #999999;
+            font-size: 14px;
+            padding: 50px 20px;
+        }
+
+        .composer {
+            padding: 15px 25px 25px;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input {
+            flex: 1;
+            min-width: 0;
+            height: 45px;
+            resize: none;
+            padding: 12px 14px;
+            border: 1px solid #dddddd;
+            border-radius: 12px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .input:focus {
+            border-color: #151515;
+        }
+
+        .send {
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            background: #151515;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .send:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
+
+        .conversation-status {
+            margin-top: 8px;
+            color: #999999;
+            font-size: 11px;
+            text-align: right;
+        }
+
+        .closed {
+            padding: 18px;
+            border-radius: 12px;
+            background: #f5f5f5;
+            color: #777777;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .error {
+            padding: 30px;
+            color: #888888;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+
+            .dm-header {
+                padding: 18px 20px;
+            }
+
+            .messages {
+                padding: 20px;
+            }
+
+            .composer {
+                padding: 12px 20px 20px;
+            }
+
+            .message {
+                max-width: 85%;
+            }
+
+            .send {
+                padding: 0 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="dm-page">
+
+
+        <header class="dm-header">
+
+            <button
+                class="back-button"
+                id="backButton"
+                type="button"
+            >
+                ←
+            </button>
+
+
+            <div class="header-info">
+
+                <div
+                    class="artist-name"
+                    id="artistName"
+                >
+                    Loading...
+                </div>
+
+                <div
+                    class="conversation-number"
+                    id="conversationNumber"
+                >
+                    Loading conversation...
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section
+            class="messages"
+            id="messages"
+        >
+
+            <div class="empty">
+                Loading messages...
+            </div>
+
+        </section>
+
+
+        <section
+            class="composer"
+            id="composer"
+        >
+
+            <form
+                class="form"
+                id="messageForm"
+            >
+
+                <textarea
+                    class="input"
+                    id="messageInput"
+                    maxlength="2000"
+                    placeholder="Reply to this fan..."
+                ></textarea>
+
+                <button
+                    class="send"
+                    id="sendButton"
+                    type="submit"
+                >
+                    Send
+                </button>
+
+            </form>
+
+
+            <div
+                class="conversation-status"
+                id="conversationStatus"
+            >
+                Loading...
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/artist-dm.js"></script>
+
+
+</body>
+
+</html>
