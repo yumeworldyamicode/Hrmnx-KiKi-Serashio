@@ -429,6 +429,484 @@ function filterByArtist(
     renderNotices();
 }
 
+/*
+ * =========================================
+ * BANNER SLIDESHOW
+ * =========================================
+ */
+
+let bannerItems = [];
+
+let currentBanner = 0;
+
+let bannerTimer = null;
+
+
+/*
+ * =========================================
+ * LOAD BANNERS
+ * =========================================
+ */
+
+async function loadBanners() {
+
+    const banner =
+        document.getElementById(
+            "noticeBanner"
+        );
+
+    const slides =
+        document.getElementById(
+            "noticeBannerSlides"
+        );
+
+    const dots =
+        document.getElementById(
+            "bannerDots"
+        );
+
+    if (!banner || !slides || !dots) {
+        return;
+    }
+
+
+    const now =
+        new Date().toISOString();
+
+
+    const {
+        data: banners,
+        error
+    } = await supabaseClient
+
+        .from("notice_banners")
+
+        .select(`
+            id,
+            artist_id,
+            title,
+            image_url,
+            link_url,
+            sort_order,
+            active,
+            starts_at,
+            ends_at,
+
+            artists (
+                id,
+                name,
+                slug
+            )
+        `)
+
+        .eq(
+            "active",
+            true
+        )
+
+        .order(
+            "sort_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Banner loading error:",
+            error
+        );
+
+        return;
+    }
+
+
+    bannerItems =
+        (banners || []).filter(
+            item => {
+
+                if (
+                    item.starts_at &&
+                    item.starts_at > now
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    item.ends_at &&
+                    item.ends_at < now
+                ) {
+                    return false;
+                }
+
+
+                return true;
+            }
+        );
+
+
+    if (
+        bannerItems.length === 0
+    ) {
+
+        banner.style.display =
+            "none";
+
+        return;
+    }
+
+
+    banner.style.display =
+        "block";
+
+
+    slides.innerHTML = "";
+
+    dots.innerHTML = "";
+
+
+    bannerItems.forEach(
+        (item, index) => {
+
+            const artist =
+                item.artists;
+
+
+            const slide =
+                document.createElement(
+                    "div"
+                );
+
+
+            slide.className =
+                "notice-banner-slide";
+
+
+            if (index === 0) {
+
+                slide.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            const link =
+                item.link_url ||
+                (
+                    artist?.slug
+                        ? `artist.html?slug=${encodeURIComponent(
+                            artist.slug
+                        )}`
+                        : "#"
+                );
+
+
+            slide.innerHTML = `
+
+                <a
+                    href="${escapeHTML(
+                        link
+                    )}"
+                >
+
+                    <img
+                        src="${escapeHTML(
+                            item.image_url
+                        )}"
+                        alt="${escapeHTML(
+                            item.title ||
+                            artist?.name ||
+                            ""
+                        )}"
+                    >
+
+
+                    ${
+                        item.title ||
+                        artist?.name
+                            ? `
+                                <div
+                                    class="notice-banner-content"
+                                >
+
+                                    ${
+                                        item.title
+                                            ? `
+                                                <div
+                                                    class="notice-banner-title"
+                                                >
+                                                    ${escapeHTML(
+                                                        item.title
+                                                    )}
+                                                </div>
+                                            `
+                                            : ""
+                                    }
+
+
+                                    ${
+                                        artist?.name
+                                            ? `
+                                                <div
+                                                    class="notice-banner-artist"
+                                                >
+                                                    ${escapeHTML(
+                                                        artist.name
+                                                    )}
+                                                </div>
+                                            `
+                                            : ""
+                                    }
+
+                                </div>
+                            `
+                            : ""
+                    }
+
+                </a>
+
+            `;
+
+
+            slides.appendChild(
+                slide
+            );
+
+
+            const dot =
+                document.createElement(
+                    "button"
+                );
+
+
+            dot.className =
+                "banner-dot";
+
+
+            if (index === 0) {
+
+                dot.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            dot.type =
+                "button";
+
+
+            dot.setAttribute(
+                "aria-label",
+                `Show banner ${index + 1}`
+            );
+
+
+            dot.addEventListener(
+                "click",
+                () => {
+
+                    showBanner(
+                        index
+                    );
+
+                    restartBannerTimer();
+
+                }
+            );
+
+
+            dots.appendChild(
+                dot
+            );
+
+        }
+    );
+
+
+    currentBanner = 0;
+
+
+    const previous =
+        document.getElementById(
+            "bannerPrevious"
+        );
+
+
+    const next =
+        document.getElementById(
+            "bannerNext"
+        );
+
+
+    previous.addEventListener(
+        "click",
+        () => {
+
+            showBanner(
+                currentBanner - 1
+            );
+
+            restartBannerTimer();
+
+        }
+    );
+
+
+    next.addEventListener(
+        "click",
+        () => {
+
+            showBanner(
+                currentBanner + 1
+            );
+
+            restartBannerTimer();
+
+        }
+    );
+
+
+    startBannerTimer();
+}
+
+
+/*
+ * =========================================
+ * SHOW BANNER
+ * =========================================
+ */
+
+function showBanner(index) {
+
+    const slides =
+        document.querySelectorAll(
+            ".notice-banner-slide"
+        );
+
+
+    const dots =
+        document.querySelectorAll(
+            ".banner-dot"
+        );
+
+
+    if (
+        slides.length === 0
+    ) {
+        return;
+    }
+
+
+    if (
+        index < 0
+    ) {
+
+        index =
+            slides.length - 1;
+
+    }
+
+
+    if (
+        index >= slides.length
+    ) {
+
+        index = 0;
+
+    }
+
+
+    slides.forEach(
+        slide => {
+
+            slide.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    dots.forEach(
+        dot => {
+
+            dot.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    slides[index].classList.add(
+        "active"
+    );
+
+
+    if (dots[index]) {
+
+        dots[index].classList.add(
+            "active"
+        );
+
+    }
+
+
+    currentBanner =
+        index;
+}
+
+
+/*
+ * =========================================
+ * AUTO ROTATION
+ * =========================================
+ */
+
+function startBannerTimer() {
+
+    clearInterval(
+        bannerTimer
+    );
+
+
+    if (
+        bannerItems.length <= 1
+    ) {
+        return;
+    }
+
+
+    bannerTimer =
+        setInterval(
+            () => {
+
+                showBanner(
+                    currentBanner + 1
+                );
+
+            },
+            6000
+        );
+}
+
+
+/*
+ * =========================================
+ * RESTART TIMER
+ * =========================================
+ */
+
+function restartBannerTimer() {
+
+    startBannerTimer();
+
+}
 
 /*
  * =========================================
@@ -439,6 +917,8 @@ function filterByArtist(
 async function startSerashioFeed() {
 
     await loadArtists();
+
+    await loadBanners();
 
     await loadNotices();
 }
