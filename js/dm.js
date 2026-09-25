@@ -384,26 +384,18 @@ document
 
 
             const {
-                error
-            } = await supabaseClient
+                    data,
+                    error
+                } = await supabaseClient.rpc(
+                    "send_dm_message",
+                    {
+                        p_conversation_id:
+                            conversation.id,
 
-                .from("dm_messages")
-
-                .insert({
-
-                    conversation_id:
-                        conversation.id,
-
-                    sender_type:
-                        "fan",
-
-                    sender_id:
-                        currentUser.id,
-
-                    content:
-                        content
-
-                });
+                            p_content:
+                            content
+                    }
+            );
 
 
             if (error) {
@@ -430,7 +422,7 @@ document
             input.value = "";
 
 
-            await loadMessages();
+            await loadConversation();
 
 
             sendButton.disabled = false;
