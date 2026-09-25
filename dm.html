@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Serashio — Messages</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #ffffff;
+            color: #151515;
+            font-family: "DM Sans", sans-serif;
+        }
+
+        .dm-page {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dm-header {
+            padding: 25px;
+            border-bottom: 1px solid #eeeeee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dm-back {
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: 20px;
+            cursor: pointer;
+            color: #151515;
+        }
+
+        .dm-artist-info {
+            flex: 1;
+        }
+
+        .dm-artist-name {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .dm-status {
+            margin-top: 3px;
+            color: #888888;
+            font-size: 12px;
+        }
+
+        .dm-messages {
+            flex: 1;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dm-loading,
+        .dm-empty {
+            text-align: center;
+            color: #999999;
+            font-size: 14px;
+            padding: 50px 20px;
+        }
+
+        .dm-message {
+            max-width: 75%;
+            padding: 11px 15px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .dm-message.fan {
+            align-self: flex-end;
+            background: #151515;
+            color: #ffffff;
+            border-bottom-right-radius: 5px;
+        }
+
+        .dm-message.artist {
+            align-self: flex-start;
+            background: #f1f1f1;
+            color: #151515;
+            border-bottom-left-radius: 5px;
+        }
+
+        .dm-message-time {
+            margin-top: 5px;
+            font-size: 10px;
+            opacity: 0.55;
+        }
+
+        .dm-composer {
+            padding: 15px 25px 25px;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .dm-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dm-input {
+            flex: 1;
+            min-width: 0;
+            resize: none;
+            height: 45px;
+            padding: 12px 14px;
+            border: 1px solid #dddddd;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .dm-input:focus {
+            border-color: #151515;
+        }
+
+        .dm-send {
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            background: #151515;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .dm-send:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
+
+        .dm-limit {
+            margin-top: 8px;
+            color: #999999;
+            font-size: 11px;
+            text-align: right;
+        }
+
+        .dm-closed {
+            padding: 20px;
+            border-radius: 12px;
+            background: #f5f5f5;
+            color: #777777;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+
+            .dm-header {
+                padding: 20px;
+            }
+
+            .dm-messages {
+                padding: 20px;
+            }
+
+            .dm-composer {
+                padding: 12px 20px 20px;
+            }
+
+            .dm-message {
+                max-width: 85%;
+            }
+
+            .dm-send {
+                padding: 0 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="dm-page">
+
+
+        <header class="dm-header">
+
+            <button
+                class="dm-back"
+                id="backButton"
+                type="button"
+            >
+                ←
+            </button>
+
+            <div class="dm-artist-info">
+
+                <div
+                    class="dm-artist-name"
+                    id="artistName"
+                >
+                    Loading...
+                </div>
+
+                <div
+                    class="dm-status"
+                    id="dmStatus"
+                >
+                    Loading conversation...
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section
+            class="dm-messages"
+            id="dmMessages"
+        >
+
+            <div class="dm-loading">
+                Loading messages...
+            </div>
+
+        </section>
+
+
+        <section
+            class="dm-composer"
+            id="dmComposer"
+        >
+
+            <form
+                class="dm-form"
+                id="dmForm"
+            >
+
+                <textarea
+                    class="dm-input"
+                    id="dmInput"
+                    placeholder="Write a message..."
+                    maxlength="2000"
+                ></textarea>
+
+                <button
+                    class="dm-send"
+                    id="dmSend"
+                    type="submit"
+                >
+                    Send
+                </button>
+
+            </form>
+
+            <div
+                class="dm-limit"
+                id="dmLimit"
+            >
+                Loading...
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/dm.js"></script>
+
+
+</body>
+
+</html>
