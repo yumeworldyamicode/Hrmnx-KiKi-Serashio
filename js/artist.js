@@ -183,8 +183,6 @@ async function loadArtist() {
 
 function renderArtistHeader() {
 
-    console.log("NEW renderArtistHeader IS RUNNING");
-
     const banner =
         artist.banner_url
             ? `
@@ -342,13 +340,6 @@ document.addEventListener("click", async function (event) {
 
         status.textContent =
             `Order created: ${order.order_reference}`;
-
-        /*
-         * Ko-fi payment redirect will go here.
-         *
-         * We will connect the order reference
-         * to the Ko-fi payment next.
-         */
 
     } catch (error) {
 
