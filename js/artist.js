@@ -360,8 +360,10 @@ document.addEventListener("click", async function (event) {
         /*
          * Open the Serashio DM Patreon purchase page.
          */
-        window.location.href =
-            "https://www.patreon.com/hrmnx/posts/serashio-dm-20-170619710";
+        window.open(
+            "https://www.patreon.com/hrmnx/posts/serashio-dm-20-170619710",
+            "_top"
+        );
 
     } catch (error) {
 
