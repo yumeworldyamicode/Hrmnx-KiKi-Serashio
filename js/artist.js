@@ -1078,13 +1078,11 @@ async function purchaseDM() {
     status.textContent =
         "Checking your account...";
 
-
     const {
         data: {
             session
         }
     } = await supabaseClient.auth.getSession();
-
 
     if (!session) {
 
@@ -1094,10 +1092,8 @@ async function purchaseDM() {
         return;
     }
 
-
     status.textContent =
         "Creating your order...";
-
 
     const {
         data,
@@ -1108,7 +1104,6 @@ async function purchaseDM() {
             p_artist_id: artist.id
         }
     );
-
 
     if (error) {
 
@@ -1126,31 +1121,26 @@ async function purchaseDM() {
         return;
     }
 
-
     console.log(
         "DM order created:",
         data
     );
 
+    /*
+     * Store the Serashio order reference
+     * so we can recover it after Patreon.
+     */
+    sessionStorage.setItem(
+        "serashio_dm_order_reference",
+        data.order_reference
+    );
 
-    status.innerHTML = `
-        Order created successfully.<br><br>
-
-        <strong>
-            Order reference:
-        </strong>
-
-        ${escapeHTML(
-            data.order_reference
-        )}
-
-        <br><br>
-
-        Your payment is still pending.
-    `;
-
-
-    button.disabled = false;
+    /*
+     * Send the user to the Patreon
+     * one-time purchase.
+     */
+    window.location.href =
+        "https://www.patreon.com/hrmnx/posts/serashio-dm-20-170619710";
 }
 
 document.addEventListener(
