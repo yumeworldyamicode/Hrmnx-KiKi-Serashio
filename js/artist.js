@@ -183,6 +183,8 @@ async function loadArtist() {
 
 function renderArtistHeader() {
 
+    console.log("NEW renderArtistHeader IS RUNNING");
+
     const banner =
         artist.banner_url
             ? `
