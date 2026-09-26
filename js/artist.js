@@ -336,10 +336,32 @@ document.addEventListener("click", async function (event) {
             throw error;
         }
 
-        console.log("DM order created:", order);
+        if (!order || !order.order_reference) {
+            throw new Error("No order reference was returned.");
+        }
+
+        console.log(
+            "DM order created:",
+            order.order_reference
+        );
+
+        /*
+         * Save the Serashio order reference temporarily.
+         * We will use this later when verifying the Patreon purchase.
+         */
+        sessionStorage.setItem(
+            "serashio_dm_order_reference",
+            order.order_reference
+        );
 
         status.textContent =
-            `Order created: ${order.order_reference}`;
+            "Redirecting to Patreon...";
+
+        /*
+         * Open the Serashio DM Patreon purchase page.
+         */
+        window.location.href =
+            "https://www.patreon.com/hrmnx/posts/serashio-dm-20-170619710";
 
     } catch (error) {
 
@@ -1062,85 +1084,72 @@ async function setupDMSection(artist) {
 ========================================= */
 
 async function purchaseDM() {
+    const { data: { session }, error: sessionError } =
+        await supabaseClient.auth.getSession();
 
-    const button =
-        document.getElementById("buy-dm-button");
-
-    const status =
-        document.getElementById("dm-status");
-
-    if (!button || !status) {
+    if (sessionError || !session) {
+        alert("Please log in to purchase DM access.");
         return;
     }
 
-    button.disabled = true;
+    const button = document.getElementById("buy-dm-button");
 
-    status.textContent =
-        "Checking your account...";
-
-    const {
-        data: {
-            session
-        }
-    } = await supabaseClient.auth.getSession();
-
-    if (!session) {
-
-        window.location.href =
-            "dm-login.html";
-
-        return;
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Creating order...";
     }
 
-    status.textContent =
-        "Creating your order...";
+    try {
+        const { data, error } =
+            await supabaseClient.rpc("create_dm_order", {
+                p_artist_id: artist.id
+            });
 
-    const {
-        data,
-        error
-    } = await supabaseClient.rpc(
-        "create_dm_order",
-        {
-            p_artist_id: artist.id
+        if (error) {
+            console.error("Create DM order error:", error);
+            throw error;
         }
-    );
 
-    if (error) {
+        if (!data || !data.order_reference) {
+            throw new Error("No order reference was returned.");
+        }
 
-        console.error(
-            "DM order error:",
-            error
+        const orderReference = data.order_reference;
+
+        /*
+         * Keep the Serashio order reference temporarily.
+         * After Patreon payment verification is implemented,
+         * this will be used to connect the Patreon purchase
+         * to this Serashio order.
+         */
+        sessionStorage.setItem(
+            "serashio_dm_order_reference",
+            orderReference
         );
 
-        status.textContent =
-            error.message ||
-            "Unable to create your order.";
+        console.log(
+            "Serashio DM order created:",
+            orderReference
+        );
 
-        button.disabled = false;
+        /*
+         * Patreon one-time purchase page
+         */
+        window.location.href =
+            "https://www.patreon.com/hrmnx/posts/serashio-dm-20-170619710";
 
-        return;
+    } catch (err) {
+        console.error("DM purchase failed:", err);
+
+        alert(
+            "Something went wrong while creating your order. Please try again."
+        );
+
+        if (button) {
+            button.disabled = false;
+            button.textContent = "Purchase DM — ¥500";
+        }
     }
-
-    console.log(
-        "DM order created:",
-        data
-    );
-
-    /*
-     * Store the Serashio order reference
-     * so we can recover it after Patreon.
-     */
-    sessionStorage.setItem(
-        "serashio_dm_order_reference",
-        data.order_reference
-    );
-
-    /*
-     * Send the user to the Patreon
-     * one-time purchase.
-     */
-    window.location.href =
-        "https://www.patreon.com/hrmnx/posts/serashio-dm-20-170619710";
 }
 
 document.addEventListener(
