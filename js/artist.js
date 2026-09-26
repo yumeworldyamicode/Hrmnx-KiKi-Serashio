@@ -230,79 +230,67 @@ function renderArtistHeader() {
               `;
 
 
-    artistHeader.innerHTML = `
+artistHeader.innerHTML = `
 
-        ${banner}
+    ${avatar}
 
+    <div>
 
-        <div class="artist-profile">
-
-            ${avatar}
-
-
-            <div class="artist-heading">
-
-                <h1 class="artist-name">
-
-                    ${escapeHTML(
-                        artist.name
-                    )}
-
-                </h1>
-
-
-                ${
-                    artist.description
-
-                        ? `
-
-                            <div class="artist-description">
-
-                                ${escapeHTML(
-                                    artist.description
-                                )}
-
-                            </div>
-
-                          `
-
-                        : ""
-                }
-
-            </div>
-
-        </div>
-
+        <h1 class="artist-name">
+            ${escapeHTML(
+                artist.name
+            )}
+        </h1>
 
         ${
-            artist.bio
+            artist.description
 
                 ? `
-
-                    <div class="artist-bio">
-
-                        <h2 class="artist-section-title">
-                            About
-                        </h2>
-
+                    <div class="artist-description">
                         ${escapeHTML(
-                            artist.bio
+                            artist.description
                         )}
-
                     </div>
-
                   `
 
                 : ""
         }
 
-
         <div
-            id="artistFAQ"
-            class="artist-faq"
-        ></div>
+            id="dm-section"
+            style="
+                margin-top:24px;
+                padding-top:20px;
+                border-top:1px solid #eee;
+            "
+        >
 
-    `;
+            <h2 style="margin:0 0 8px;">
+                Direct Messages
+            </h2>
+
+            <p style="margin:0 0 14px;">
+                Send a private message to this artist.
+                One DM purchase includes 20 messages.
+            </p>
+
+            <button
+                id="buy-dm-button"
+                type="button"
+            >
+                Purchase DM — ¥500
+            </button>
+
+            <p
+                id="dm-status"
+                style="margin-top:12px;"
+            ></p>
+
+        </div>
+
+    </div>
+
+`;
 }
 
 
@@ -935,3 +923,190 @@ function showError(
  */
 
 loadArtist();
+
+async function setupDMSection(artist) {
+
+    const dmSection = document.getElementById("dm-section");
+    const buyButton = document.getElementById("buy-dm-button");
+    const status = document.getElementById("dm-status");
+
+    if (!dmSection || !buyButton || !status) {
+        return;
+    }
+
+    dmSection.style.display = "block";
+
+    const {
+        data: {
+            session
+        }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+
+        buyButton.textContent = "Log in to purchase a DM";
+
+        buyButton.onclick = function () {
+            window.location.href = "dm-login.html";
+        };
+
+        return;
+    }
+
+    buyButton.textContent = "Purchase DM — ¥500";
+
+    buyButton.onclick = async function () {
+
+        buyButton.disabled = true;
+        status.textContent = "Creating your order...";
+
+        const {
+            data,
+            error
+        } = await supabaseClient.rpc(
+            "create_dm_order",
+            {
+                p_artist_id: artist.id
+            }
+        );
+
+        if (error) {
+
+            console.error("DM order error:", error);
+
+            status.textContent =
+                error.message ||
+                "Could not create the DM order.";
+
+            buyButton.disabled = false;
+            return;
+        }
+
+        console.log("DM order created:", data);
+
+        status.innerHTML =
+            "Your order has been created.<br>" +
+            "Order reference: <strong>" +
+            data.order_reference +
+            "</strong>";
+
+        /*
+         * Ko-fi payment will be connected here next.
+         */
+
+        buyButton.disabled = false;
+    };
+}
+
+/* =========================================
+   DM PURCHASE
+========================================= */
+
+async function purchaseDM() {
+
+    const button =
+        document.getElementById("buy-dm-button");
+
+    const status =
+        document.getElementById("dm-status");
+
+    if (!button || !status) {
+        return;
+    }
+
+    button.disabled = true;
+
+    status.textContent =
+        "Checking your account...";
+
+
+    const {
+        data: {
+            session
+        }
+    } = await supabaseClient.auth.getSession();
+
+
+    if (!session) {
+
+        window.location.href =
+            "dm-login.html";
+
+        return;
+    }
+
+
+    status.textContent =
+        "Creating your order...";
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient.rpc(
+        "create_dm_order",
+        {
+            p_artist_id: artist.id
+        }
+    );
+
+
+    if (error) {
+
+        console.error(
+            "DM order error:",
+            error
+        );
+
+        status.textContent =
+            error.message ||
+            "Unable to create your order.";
+
+        button.disabled = false;
+
+        return;
+    }
+
+
+    console.log(
+        "DM order created:",
+        data
+    );
+
+
+    status.innerHTML = `
+        Order created successfully.<br><br>
+
+        <strong>
+            Order reference:
+        </strong>
+
+        ${escapeHTML(
+            data.order_reference
+        )}
+
+        <br><br>
+
+        Your payment is still pending.
+    `;
+
+
+    button.disabled = false;
+}
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target &&
+            event.target.id ===
+                "buy-dm-button"
+        ) {
+
+            purchaseDM();
+
+        }
+
+    }
+);
