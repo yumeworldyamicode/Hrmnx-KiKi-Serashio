@@ -308,6 +308,58 @@ function renderArtistHeader() {
     `;
 }
 
+document.addEventListener("click", async function (event) {
+
+    if (event.target.id !== "buy-dm-button") {
+        return;
+    }
+
+    const button = event.target;
+    const status = document.getElementById("dm-status");
+
+    button.disabled = true;
+    status.textContent = "Creating your DM order...";
+
+    try {
+
+        const {
+            data: order,
+            error
+        } = await supabaseClient.rpc(
+            "create_dm_order",
+            {
+                p_artist_id: artist.id
+            }
+        );
+
+        if (error) {
+            throw error;
+        }
+
+        console.log("DM order created:", order);
+
+        status.textContent =
+            `Order created: ${order.order_reference}`;
+
+        /*
+         * Ko-fi payment redirect will go here.
+         *
+         * We will connect the order reference
+         * to the Ko-fi payment next.
+         */
+
+    } catch (error) {
+
+        console.error("DM order error:", error);
+
+        status.textContent =
+            error.message || "Something went wrong.";
+
+        button.disabled = false;
+    }
+
+});
+
 /*
  * =========================================
  * LOAD FAQS
