@@ -1135,7 +1135,7 @@ async function purchaseDM() {
         /*
          * Patreon one-time purchase page
          */
-        window.location.href =
+        window.top.location.href =
             "https://www.patreon.com/hrmnx/posts/serashio-dm-20-170619710";
 
     } catch (err) {
