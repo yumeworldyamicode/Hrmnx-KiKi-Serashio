@@ -183,19 +183,34 @@ async function loadArtist() {
 
 function renderArtistHeader() {
 
+    const banner =
+        artist.banner_url
+            ? `
+                <div class="artist-banner">
+                    <img
+                        src="${escapeHTML(artist.banner_url)}"
+                        alt=""
+                    >
+                </div>
+              `
+            : `
+                <div class="artist-banner">
+                    <div class="artist-banner-placeholder">
+                        No banner
+                    </div>
+                </div>
+              `;
+
+
     const avatar =
         artist.avatar_url
-
             ? `
                 <img
                     class="artist-avatar"
-                    src="${escapeHTML(
-                        artist.avatar_url
-                    )}"
+                    src="${escapeHTML(artist.avatar_url)}"
                     alt=""
                 >
               `
-
             : `
                 <div class="artist-avatar-placeholder">
                     ♪
@@ -205,61 +220,88 @@ function renderArtistHeader() {
 
     artistHeader.innerHTML = `
 
-        ${avatar}
+        ${banner}
 
-        <div>
 
-            <h1 class="artist-name">
-                ${escapeHTML(
-                    artist.name
-                )}
-            </h1>
+        <div class="artist-profile">
 
-            ${
-                artist.description
+            ${avatar}
 
-                    ? `
-                        <div class="artist-description">
-                            ${escapeHTML(
-                                artist.description
-                            )}
-                        </div>
-                      `
+            <div class="artist-heading">
 
-                    : ""
-            }
+                <h1 class="artist-name">
+                    ${escapeHTML(artist.name)}
+                </h1>
 
-            <div
-                id="dm-section"
-                style="
-                    margin-top:24px;
-                    padding-top:20px;
-                    border-top:1px solid #eee;
-                "
-            >
-
-                <h2 style="margin:0 0 8px;">
-                    Direct Messages
-                </h2>
-
-                <p style="margin:0 0 14px;">
-                    Send a private message to this artist.
-                    One DM purchase includes 20 messages.
-                </p>
-
-                <button
-                    id="buy-dm-button"
-                    type="button"
-                >
-                    Purchase DM — ¥500
-                </button>
-
-                <p
-                    id="dm-status"
-                    style="margin-top:12px;"
-                ></p>
+                ${
+                    artist.description
+                        ? `
+                            <div class="artist-description">
+                                ${escapeHTML(artist.description)}
+                            </div>
+                          `
+                        : ""
+                }
 
             </div>
+
+        </div>
+
+
+        ${
+            artist.bio
+                ? `
+                    <div class="artist-bio">
+
+                        <h2 class="artist-section-title">
+                            About
+                        </h2>
+
+                        <div class="artist-description">
+                            ${escapeHTML(artist.bio)}
+                        </div>
+
+                    </div>
+                  `
+                : ""
+        }
+
+
+        <div
+            id="artistFAQ"
+            class="artist-faq"
+        ></div>
+
+
+        <div
+            id="dm-section"
+            style="
+                margin-top:24px;
+                padding-top:20px;
+                border-top:1px solid #eee;
+            "
+        >
+
+            <h2 style="margin:0 0 8px;">
+                Direct Messages
+            </h2>
+
+            <p style="margin:0 0 14px;">
+                Send a private message to this artist.
+                One DM purchase includes 20 messages.
+            </p>
+
+            <button
+                id="buy-dm-button"
+                type="button"
+            >
+                Purchase DM — ¥500
+            </button>
+
+            <p
+                id="dm-status"
+                style="margin-top:12px;"
+            ></p>
 
         </div>
 
