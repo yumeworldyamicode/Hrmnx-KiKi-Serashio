@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patreon Verification — Serashio</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            background: #f7f7f7;
+            color: #151515;
+            font-family: "DM Sans", Arial, sans-serif;
+        }
+
+        .verification-page {
+            max-width: 520px;
+            margin: 80px auto;
+            padding: 30px;
+        }
+
+        .verification-box {
+            background: #fff;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 26px;
+        }
+
+        .description {
+            margin-top: 0;
+            margin-bottom: 28px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 20px;
+
+            border: 1px solid #ddd;
+            border-radius: 10px;
+
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #151515;
+            color: white;
+
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        #status {
+            margin-top: 20px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: #f1f1f1;
+            display: none;
+            line-height: 1.5;
+        }
+
+        #status.success {
+            display: block;
+            background: #e9f7ec;
+            color: #176b2c;
+        }
+
+        #status.error {
+            display: block;
+            background: #fbeaea;
+            color: #9b2020;
+        }
+
+        #loading {
+            text-align: center;
+            color: #777;
+        }
+
+        #verification {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="verification-page">
+
+    <div id="loading">
+        Checking staff access...
+    </div>
+
+    <div id="verification">
+
+        <div class="verification-box">
+
+            <h1>Patreon DM Verification</h1>
+
+            <p class="description">
+                Verify a completed Patreon purchase and activate
+                the customer's Serashio DM entitlement.
+            </p>
+
+            <label for="orderReference">
+                Serashio Order Reference
+            </label>
+
+            <input
+                type="text"
+                id="orderReference"
+                placeholder="SERASHIO-DM-XXXXXXXX"
+                autocomplete="off"
+            >
+
+            <label for="transactionId">
+                Patreon Transaction ID
+            </label>
+
+            <input
+                type="text"
+                id="transactionId"
+                placeholder="Patreon transaction ID"
+                autocomplete="off"
+            >
+
+            <button id="verifyButton">
+                Verify Purchase
+            </button>
+
+            <div id="status"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+async function checkStaffAccess() {
+
+    const loading =
+        document.getElementById("loading");
+
+    const verification =
+        document.getElementById("verification");
+
+    try {
+
+        const {
+            data: { session },
+            error
+        } = await supabaseClient.auth.getSession();
+
+        if (error || !session) {
+            loading.textContent =
+                "You must be logged in to access this page.";
+
+            return;
+        }
+
+
+        /*
+         * Check the currently logged-in user's profile.
+         */
+        const {
+            data: profile,
+            error: profileError
+        } = await supabaseClient
+            .from("profiles")
+            .select("is_staff")
+            .eq("id", session.user.id)
+            .single();
+
+
+        if (profileError || !profile || !profile.is_staff) {
+
+            loading.textContent =
+                "Staff access required.";
+
+            return;
+        }
+
+
+        loading.style.display = "none";
+        verification.style.display = "block";
+
+    } catch (error) {
+
+        console.error(
+            "Staff access check failed:",
+            error
+        );
+
+        loading.textContent =
+            "Unable to verify staff access.";
+
+    }
+}
+
+
+async function verifyPurchase() {
+
+    const orderReference =
+        document
+            .getElementById("orderReference")
+            .value
+            .trim();
+
+    const transactionId =
+        document
+            .getElementById("transactionId")
+            .value
+            .trim();
+
+    const button =
+        document.getElementById("verifyButton");
+
+    const status =
+        document.getElementById("status");
+
+
+    status.className = "";
+    status.style.display = "none";
+
+
+    if (!orderReference) {
+
+        status.textContent =
+            "Please enter the Serashio order reference.";
+
+        status.className = "error";
+
+        return;
+    }
+
+
+    if (!transactionId) {
+
+        status.textContent =
+            "Please enter the Patreon transaction ID.";
+
+        status.className = "error";
+
+        return;
+    }
+
+
+    button.disabled = true;
+    button.textContent = "Verifying...";
+
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient.rpc(
+            "staff_fulfill_patreon_dm_order",
+            {
+                p_order_reference: orderReference,
+                p_patreon_transaction_id: transactionId
+            }
+        );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        console.log(
+            "Patreon purchase verified:",
+            data
+        );
+
+
+        status.textContent =
+            "Purchase verified successfully. " +
+            "20 DM messages have been activated.";
+
+        status.className = "success";
+
+
+        /*
+         * Clear the fields after successful fulfillment.
+         */
+        document
+            .getElementById("orderReference")
+            .value = "";
+
+        document
+            .getElementById("transactionId")
+            .value = "";
+
+
+    } catch (error) {
+
+        console.error(
+            "Patreon verification failed:",
+            error
+        );
+
+        status.textContent =
+            error.message ||
+            "Unable to verify this purchase.";
+
+        status.className = "error";
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Verify Purchase";
+
+    }
+}
+
+
+document
+    .getElementById("verifyButton")
+    .addEventListener(
+        "click",
+        verifyPurchase
+    );
+
+
+checkStaffAccess();
+
+</script>
+
+</body>
+</html>
