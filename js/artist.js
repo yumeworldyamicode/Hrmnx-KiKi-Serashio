@@ -183,33 +183,6 @@ async function loadArtist() {
 
 function renderArtistHeader() {
 
-    const banner =
-        artist.banner_url
-
-            ? `
-                <div class="artist-banner">
-
-                    <img
-                        src="${escapeHTML(
-                            artist.banner_url
-                        )}"
-                        alt=""
-                    >
-
-                </div>
-              `
-
-            : `
-                <div class="artist-banner">
-
-                    <div class="artist-banner-placeholder">
-                        No banner
-                    </div>
-
-                </div>
-              `;
-
-
     const avatar =
         artist.avatar_url
 
@@ -230,69 +203,68 @@ function renderArtistHeader() {
               `;
 
 
-artistHeader.innerHTML = `
+    artistHeader.innerHTML = `
 
-    ${avatar}
+        ${avatar}
 
-    <div>
+        <div>
 
-        <h1 class="artist-name">
-            ${escapeHTML(
-                artist.name
-            )}
-        </h1>
+            <h1 class="artist-name">
+                ${escapeHTML(
+                    artist.name
+                )}
+            </h1>
 
-        ${
-            artist.description
+            ${
+                artist.description
 
-                ? `
-                    <div class="artist-description">
-                        ${escapeHTML(
-                            artist.description
-                        )}
-                    </div>
-                  `
+                    ? `
+                        <div class="artist-description">
+                            ${escapeHTML(
+                                artist.description
+                            )}
+                        </div>
+                      `
 
-                : ""
-        }
+                    : ""
+            }
 
-        <div
-            id="dm-section"
-            style="
-                margin-top:24px;
-                padding-top:20px;
-                border-top:1px solid #eee;
-            "
-        >
-
-            <h2 style="margin:0 0 8px;">
-                Direct Messages
-            </h2>
-
-            <p style="margin:0 0 14px;">
-                Send a private message to this artist.
-                One DM purchase includes 20 messages.
-            </p>
-
-            <button
-                id="buy-dm-button"
-                type="button"
+            <div
+                id="dm-section"
+                style="
+                    margin-top:24px;
+                    padding-top:20px;
+                    border-top:1px solid #eee;
+                "
             >
-                Purchase DM — ¥500
-            </button>
 
-            <p
-                id="dm-status"
-                style="margin-top:12px;"
-            ></p>
+                <h2 style="margin:0 0 8px;">
+                    Direct Messages
+                </h2>
+
+                <p style="margin:0 0 14px;">
+                    Send a private message to this artist.
+                    One DM purchase includes 20 messages.
+                </p>
+
+                <button
+                    id="buy-dm-button"
+                    type="button"
+                >
+                    Purchase DM — ¥500
+                </button>
+
+                <p
+                    id="dm-status"
+                    style="margin-top:12px;"
+                ></p>
+
+            </div>
 
         </div>
 
-    </div>
-
-`;
+    `;
 }
-
 
 /*
  * =========================================
