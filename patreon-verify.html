@@ -187,51 +187,110 @@ async function checkStaffAccess() {
 
     try {
 
+        /* =========================
+           CHECK KIKI SUPABASE SESSION
+        ========================= */
+
         const {
-            data: { user },
-            error: userError
-        } = await supabaseClient.auth.getUser();
+            data: { session },
+            error: sessionError
+        } = await supabaseClient.auth.getSession();
 
-        console.log("Current Supabase user:", user);
-        console.log("User error:", userError);
+        console.log("KiKi session:", session);
+        console.log("Session error:", sessionError);
 
-        if (userError || !user) {
 
-            loading.textContent =
-                "You must be logged in to access this page.";
+        if (sessionError) {
 
             console.error(
-                "No authenticated user:",
-                userError
+                "Supabase session error:",
+                sessionError
             );
+
+            loading.textContent =
+                "Unable to check your KiKi login.";
 
             return;
         }
 
+
+        /* =========================
+           NOT LOGGED IN
+        ========================= */
+
+        if (!session) {
+
+            loading.innerHTML = `
+                <p>You are not logged in to KiKi.</p>
+
+                <a
+                    href="logsignin.html"
+                    style="
+                        display: inline-block;
+                        margin-top: 12px;
+                        padding: 12px 18px;
+                        background: #151515;
+                        color: white;
+                        border-radius: 10px;
+                        text-decoration: none;
+                    "
+                >
+                    Log in to KiKi
+                </a>
+            `;
+
+            return;
+        }
+
+
+        /* =========================
+           GET KIKI USER
+        ========================= */
+
+        const user = session.user;
+
+        console.log(
+            "KiKi user:",
+            user
+        );
+
+
+        /* =========================
+           CHECK STAFF PROFILE
+        ========================= */
 
         const {
             data: profile,
             error: profileError
         } = await supabaseClient
             .from("profiles")
-            .select("id, username, is_staff")
+            .select(
+                "id, username, display_name, is_staff"
+            )
             .eq("id", user.id)
             .maybeSingle();
 
 
-        console.log("Staff profile:", profile);
-        console.log("Profile error:", profileError);
+        console.log(
+            "KiKi profile:",
+            profile
+        );
+
+        console.log(
+            "Profile error:",
+            profileError
+        );
 
 
         if (profileError) {
 
-            loading.textContent =
-                "Unable to read your staff profile.";
-
             console.error(
-                "Profile query failed:",
+                "Profile lookup failed:",
                 profileError
             );
+
+            loading.textContent =
+                "Unable to read your KiKi profile.";
 
             return;
         }
@@ -240,50 +299,56 @@ async function checkStaffAccess() {
         if (!profile) {
 
             loading.textContent =
-                "No Serashio profile was found for this account.";
-
-            console.error(
-                "No profile found for user:",
-                user.id
-            );
+                "No KiKi profile was found for this account.";
 
             return;
         }
 
+
+        /* =========================
+           STAFF CHECK
+        ========================= */
 
         if (profile.is_staff !== true) {
 
-            loading.textContent =
-                "Staff access required.";
+            loading.innerHTML = `
+                <p>Staff access required.</p>
 
-            console.error(
-                "User is not staff:",
-                profile
-            );
+                <p style="
+                    font-size: 13px;
+                    color: #777;
+                ">
+                    Logged in as:
+                    ${profile.display_name || profile.username || user.email}
+                </p>
+            `;
 
             return;
         }
 
 
+        /* =========================
+           STAFF VERIFIED
+        ========================= */
+
         console.log(
-            "Staff access confirmed:",
+            "KiKi staff access confirmed:",
             profile.username
         );
 
         loading.style.display = "none";
-        verification.style.display = "block";
 
+        verification.style.display = "block";
 
     } catch (error) {
 
         console.error(
-            "Staff access check crashed:",
+            "KiKi authentication check crashed:",
             error
         );
 
         loading.textContent =
-            "Unable to verify staff access.";
-
+            "Unable to verify KiKi staff access.";
     }
 }
 
