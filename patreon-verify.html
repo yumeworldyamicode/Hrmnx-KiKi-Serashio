@@ -188,47 +188,96 @@ async function checkStaffAccess() {
     try {
 
         const {
-            data: { session },
-            error
-        } = await supabaseClient.auth.getSession();
+            data: { user },
+            error: userError
+        } = await supabaseClient.auth.getUser();
 
-        if (error || !session) {
+        console.log("Current Supabase user:", user);
+        console.log("User error:", userError);
+
+        if (userError || !user) {
+
             loading.textContent =
                 "You must be logged in to access this page.";
+
+            console.error(
+                "No authenticated user:",
+                userError
+            );
 
             return;
         }
 
 
-        /*
-         * Check the currently logged-in user's profile.
-         */
         const {
             data: profile,
             error: profileError
         } = await supabaseClient
             .from("profiles")
-            .select("is_staff")
-            .eq("id", session.user.id)
-            .single();
+            .select("id, username, is_staff")
+            .eq("id", user.id)
+            .maybeSingle();
 
 
-        if (profileError || !profile || !profile.is_staff) {
+        console.log("Staff profile:", profile);
+        console.log("Profile error:", profileError);
+
+
+        if (profileError) {
 
             loading.textContent =
-                "Staff access required.";
+                "Unable to read your staff profile.";
+
+            console.error(
+                "Profile query failed:",
+                profileError
+            );
 
             return;
         }
 
 
+        if (!profile) {
+
+            loading.textContent =
+                "No Serashio profile was found for this account.";
+
+            console.error(
+                "No profile found for user:",
+                user.id
+            );
+
+            return;
+        }
+
+
+        if (profile.is_staff !== true) {
+
+            loading.textContent =
+                "Staff access required.";
+
+            console.error(
+                "User is not staff:",
+                profile
+            );
+
+            return;
+        }
+
+
+        console.log(
+            "Staff access confirmed:",
+            profile.username
+        );
+
         loading.style.display = "none";
         verification.style.display = "block";
+
 
     } catch (error) {
 
         console.error(
-            "Staff access check failed:",
+            "Staff access check crashed:",
             error
         );
 
@@ -237,7 +286,6 @@ async function checkStaffAccess() {
 
     }
 }
-
 
 async function verifyPurchase() {
 
