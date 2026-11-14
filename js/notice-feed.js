@@ -374,7 +374,7 @@ function renderNotices() {
 
 
                     <div class="read-notice">
-                        Read notice →
+                        Read notice <svg class="read-notice-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
                     </div>
 
                 </div>
