@@ -277,7 +277,7 @@
 
         dock.innerHTML = `
             <div class="nm43-dock-main">
-                ${currentStream ? `<video id="nm43-shared-video" autoplay playsinline muted></video>` : `<div class="nm43-dock-empty"><span>♫</span><small>CALL ACTIVE</small></div>`}
+                ${currentStream ? `<video id="nm43-shared-video" autoplay playsinline muted></video>` : `<div class="nm43-dock-empty"><svg class="nm43-empty-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13M9 18c0 1.1-1.6 2-3.5 2S2 19.1 2 18s1.6-2 3.5-2S9 16.9 9 18Zm12-2c0 1.1-1.6 2-3.5 2S14 17.1 14 16s1.6-2 3.5-2 3.5.9 3.5 2Z"/></svg><small>CALL ACTIVE</small></div>`}
                 <div class="nm43-dock-overlay">
                     <span class="nm43-dock-live"><i></i> LIVE</span>
                     <strong>${esc(project)}</strong>
@@ -286,7 +286,7 @@
             </div>
             <div class="nm43-dock-actions">
                 <button type="button" id="nm43-open-call">Open call</button>
-                <button type="button" id="nm43-hide-dock" aria-label="Hide call preview">×</button>
+                <button type="button" id="nm43-hide-dock" aria-label="Hide call preview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
             </div>`;
 
         const video = dock.querySelector("#nm43-shared-video");
