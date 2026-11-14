@@ -58,3 +58,7 @@
 .read-notice-arrow { margin-left: 4px; }
 .nm43-empty-icon { display: inline-block; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+.brand-separator { display:inline-flex; align-items:center; justify-content:center; width:18px; height:28px; color:#fff; flex:0 0 18px; }
+.brand-separator svg { width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; }
+@media (max-width:768px) { .brand-separator { width:14px; height:22px; flex-basis:14px; } }
